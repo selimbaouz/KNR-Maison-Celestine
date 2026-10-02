@@ -1,0 +1,38 @@
+{% doc %}
+  Formulaire d'ajout au panier.
+
+  @param {object} product - Produit
+  @param {object} variant - Variante sélectionnée
+  @param {object} block - Bloc buy
+
+  @example
+  {% render '_knr-product-buy', product: product, variant: current_variant, block: block %}
+{% enddoc %}
+
+{%- assign add_label = block.settings.label -%}
+{%- if add_label == blank -%}
+  {%- assign add_label = 'products.product.add_to_cart' | t -%}
+{%- endif -%}
+<product-form class="knr-product__form" data-hide-errors="true" {{ block.shopify_attributes }}>
+  {%- form 'product', product -%}
+    <input type="hidden" name="id" value="{{ variant.id }}" data-ref="variant-id">
+    <button
+      type="submit"
+      name="add"
+      class="knr-product__add"
+      data-ref="add"
+      data-label="{{ add_label | escape }}"
+      data-sold-out="{{ 'products.product.sold_out' | t }}"
+      {% unless variant.available %}disabled aria-disabled="true"{% endunless %}
+    >
+      <span data-ref="add-label">
+        {%- if variant.available -%}
+          {{ add_label | escape }}
+        {%- else -%}
+          {{ 'products.product.sold_out' | t }}
+        {%- endif -%}
+      </span>
+      {% render 'loading-spinner' %}
+    </button>
+  {%- endform -%}
+</product-form>

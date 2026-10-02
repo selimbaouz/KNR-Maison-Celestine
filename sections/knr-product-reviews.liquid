@@ -1,0 +1,386 @@
+{% comment %}
+  Avis clients. Métaobjet knr_reviews : auteur, note, titre, contenu, date, verifier, produit.
+  Écrire un avis et poser une question envoient le formulaire de contact Shopify.
+{% endcomment %}
+
+{{ 'knr-product-reviews.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'knr-product-reviews.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign per_page = section.settings.per_page | default: 3
+  assign review_count = 0
+  assign rating_sum = 0
+  assign one_star_count = 0
+  assign two_star_count = 0
+  assign three_star_count = 0
+  assign four_star_count = 0
+  assign five_star_count = 0
+-%}
+
+<knr-product-reviews
+  class="knr-product-reviews"
+  data-per-page="{{ per_page }}"
+  style="
+    --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+    --star-color: {{ section.settings.star_color }};
+    --bar-background: {{ section.settings.bar_background }};
+    --bar-fill: {{ section.settings.bar_fill }};
+  "
+  {{ section.shopify_attributes }}
+>
+  <div class="knr-product-reviews__inner page-width">
+    {%- if section.settings.title != blank -%}
+      <h2 class="knr-product-reviews__heading">{{ section.settings.title | escape }}</h2>
+    {%- endif -%}
+
+    <p class="knr-product-reviews__success" data-ref="success" hidden>{{ 'knr.reviews.success' | t }}</p>
+
+    {%- paginate shop.metaobjects.knr_reviews.values by 50 -%}
+      {%- for review in shop.metaobjects.knr_reviews.values -%}
+        {%- liquid
+          assign skip_review = false
+          if section.settings.filter_by_product and product != blank and review.produit.value != blank and review.produit.value.id != product.id
+            assign skip_review = true
+          endif
+          assign review_rating = review.note.value | plus: 0
+          if review_rating < 1 or review_rating > 5
+            assign skip_review = true
+          endif
+          unless skip_review
+            assign review_count = review_count | plus: 1
+            assign rating_sum = rating_sum | plus: review_rating
+            case review_rating
+              when 1
+                assign one_star_count = one_star_count | plus: 1
+              when 2
+                assign two_star_count = two_star_count | plus: 1
+              when 3
+                assign three_star_count = three_star_count | plus: 1
+              when 4
+                assign four_star_count = four_star_count | plus: 1
+              when 5
+                assign five_star_count = five_star_count | plus: 1
+            endcase
+          endunless
+        -%}
+      {%- endfor -%}
+
+      {%- liquid
+        if review_count > 0
+          assign average = rating_sum | times: 1.0 | divided_by: review_count | round: 1
+          assign average_times_ten = rating_sum | times: 10.0 | divided_by: review_count | round
+          assign average_whole = average_times_ten | divided_by: 10
+          assign average_decimal = average_times_ten | modulo: 10
+          assign average_label = average_whole | append: '.' | append: average_decimal
+        else
+          assign average = 0
+          assign average_label = '0.0'
+        endif
+        assign average_label = average_label | replace: '.', ','
+      -%}
+
+      <div class="knr-product-reviews__header">
+        <div class="knr-product-reviews__summary">
+          <div class="knr-product-reviews__summary-line">
+            {% render '_knr-review-star', reviews_rating: average %}
+            <span>{{ 'knr.reviews.average' | t: rating: average_label }}</span>
+          </div>
+          <p class="knr-product-reviews__based">{{ 'knr.reviews.based_on' | t: count: review_count }}</p>
+        </div>
+
+        <div class="knr-product-reviews__bars-container">
+          <ul class="knr-product-reviews__bars">
+            {%- for star_count in (1..5) reversed -%}
+              {%- liquid
+                case star_count
+                  when 5
+                    assign star_bar_count = five_star_count
+                  when 4
+                    assign star_bar_count = four_star_count
+                  when 3
+                    assign star_bar_count = three_star_count
+                  when 2
+                    assign star_bar_count = two_star_count
+                  when 1
+                    assign star_bar_count = one_star_count
+                endcase
+                if review_count > 0
+                  assign star_bar_percent = star_bar_count | times: 100 | divided_by: review_count
+                else
+                  assign star_bar_percent = 0
+                endif
+              -%}
+              <li class="knr-product-reviews__bar-row">
+                {% render '_knr-review-star', reviews_rating: star_count %}
+                <span class="knr-product-reviews__track">
+                  <span class="knr-product-reviews__fill" style="--fill-percent: {{ star_bar_percent }}%"></span>
+                </span>
+                <span class="knr-product-reviews__count">{{ star_bar_count }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+  
+          <div class="knr-product-reviews__actions">
+            {%- if section.settings.review_label != blank -%}
+              <button type="button" class="knr-product-reviews__button knr-product-reviews__button--primary" data-ref="open" data-dialog="knr-reviews-write-{{ section.id }}">
+                {{ section.settings.review_label | escape }}
+              </button>
+            {%- endif -%}
+            {%- if section.settings.question_label != blank -%}
+              <button type="button" class="knr-product-reviews__button" data-ref="open" data-dialog="knr-reviews-question-{{ section.id }}">
+                {{ section.settings.question_label | escape }}
+              </button>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+      <div class="knr-product-reviews__inner-content">
+        <div class="knr-product-reviews__toolbar">
+          <label class="knr-product-reviews__filter">
+            {% render '_knr-icons', icon: 'filter', class: 'knr-product-reviews__filter-icon' %}
+            <span>{{ 'knr.reviews.filter' | t }}</span>
+            <select class="knr-product-reviews__filter-select" data-ref="filter" aria-label="{{ 'knr.reviews.filter' | t }}">
+              <option value="all">{{ 'knr.reviews.all_ratings' | t }}</option>
+              {%- for star_count in (1..5) reversed -%}
+                <option value="{{ star_count }}">
+                  {%- if star_count == 1 -%}
+                    {{ 'knr.reviews.star' | t: count: star_count }}
+                  {%- else -%}
+                    {{ 'knr.reviews.stars' | t: count: star_count }}
+                  {%- endif -%}
+                </option>
+              {%- endfor -%}
+            </select>
+          </label>
+        </div>
+  
+        <ul class="knr-product-reviews__list" data-ref="list">
+          {%- assign rendered_review_count = 0 -%}
+          {%- for review in shop.metaobjects.knr_reviews.values -%}
+            {%- liquid
+              assign skip_review = false
+              if section.settings.filter_by_product and product != blank and review.produit.value != blank and review.produit.value.id != product.id
+                assign skip_review = true
+              endif
+              assign review_rating = review.note.value | plus: 0
+              if review_rating < 1 or review_rating > 5
+                assign skip_review = true
+              endif
+            -%}
+            {%- unless skip_review -%}
+              {%- assign rendered_review_count = rendered_review_count | plus: 1 -%}
+              <li class="knr-product-reviews__item" data-ref="item" data-note="{{ review_rating }}">
+                <div class="knr-product-reviews__top">
+                  {% render '_knr-review-star', reviews_rating: review_rating %}
+                  {%- if review.date.value != blank -%}
+                    <time class="knr-product-reviews__date" datetime="{{ review.date.value | date: '%Y-%m-%d' }}">{{ review.date.value | date: '%d/%m/%y' }}</time>
+                  {%- endif -%}
+                </div>
+                {%- if review.auteur.value != blank or review.verifier.value -%}
+                  <p class="knr-product-reviews__author">
+                    {%- if review.auteur.value != blank -%}
+                      {{ review.auteur.value | escape }}
+                    {%- endif -%}
+                    {%- if review.verifier.value -%}
+                      <span class="knr-product-reviews__badge">{{ 'knr.reviews.verified' | t }}</span>
+                    {%- endif -%}
+                  </p>
+                {%- endif -%}
+                <div class="knr-product-reviews__review-content">
+                  {%- if review.titre.value != blank -%}
+                    <p class="knr-product-reviews__review-title">{{ review.titre.value | escape }}</p>
+                  {%- endif -%}
+                  {%- if review.contenu.value != blank -%}
+                    <div class="knr-product-reviews__content">{{ review.contenu | metafield_tag }}</div>
+                  {%- endif -%}
+                </div>
+              </li>
+            {%- endunless -%}
+          {%- endfor -%}
+          {%- if rendered_review_count == 0 -%}
+            <li class="knr-product-reviews__empty">{{ 'knr.reviews.empty' | t }}</li>
+          {%- endif -%}
+        </ul>
+      </div>
+      <p class="knr-product-reviews__empty" data-ref="empty-filter" hidden>{{ 'knr.reviews.empty_filter' | t }}</p>
+    {%- endpaginate -%}
+
+    {%- if section.settings.load_more_label != blank -%}
+      <button type="button" class="knr-product-reviews__button knr-product-reviews__button--wide" data-ref="load-more" hidden>
+        {{ section.settings.load_more_label | escape }}
+      </button>
+    {%- endif -%}
+  </div>
+
+  <dialog class="knr-product-reviews__dialog" id="knr-reviews-write-{{ section.id }}" data-ref="dialog">
+    <button type="button" class="knr-product-reviews__close" data-ref="close" aria-label="{{ 'knr.reviews.close' | t }}">×</button>
+    {%- if section.settings.review_label != blank -%}
+      <h3 class="knr-product-reviews__dialog-title">{{ section.settings.review_label | escape }}</h3>
+    {%- endif -%}
+    {%- assign review_form_id = 'knr-reviews-write-form-' | append: section.id -%}
+    {%- form 'contact', id: review_form_id -%}
+      <div class="knr-product-reviews__form">
+        {%- if form.errors -%}
+          <div class="knr-product-reviews__errors" data-ref="errors">
+            {%- for field in form.errors -%}
+              <p class="knr-product-reviews__error">{{ form.errors.messages[field] }}</p>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        <input type="hidden" name="contact[{{ 'knr.reviews.form_type' | t }}]" value="{{ 'knr.reviews.form_review' | t }}">
+        {%- if product != blank -%}
+          <input type="hidden" name="contact[{{ 'knr.reviews.form_product' | t }}]" value="{{ product.title | escape }}">
+        {%- endif -%}
+        <fieldset class="knr-product-reviews__rating">
+          <legend class="knr-product-reviews__rating-legend">{{ 'knr.reviews.your_rating' | t }}</legend>
+          <div class="knr-product-reviews__rating-stars">
+            {%- for star_count in (1..5) reversed -%}
+              <input class="knr-product-reviews__rating-input" type="radio" id="knr-review-note-{{ star_count }}-{{ section.id }}" name="contact[{{ 'knr.reviews.form_rating' | t }}]" value="{{ star_count }}" required>
+              <label class="knr-product-reviews__rating-label" for="knr-review-note-{{ star_count }}-{{ section.id }}">★</label>
+            {%- endfor -%}
+          </div>
+        </fieldset>
+        <label class="knr-product-reviews__field">
+          {{ 'knr.reviews.name' | t }}
+          <input class="knr-product-reviews__input" type="text" name="contact[name]" autocomplete="name" required>
+        </label>
+        <label class="knr-product-reviews__field">
+          {{ 'knr.reviews.email' | t }}
+          <input class="knr-product-reviews__input" type="email" name="contact[email]" autocomplete="email" required>
+        </label>
+        <label class="knr-product-reviews__field">
+          {{ 'knr.reviews.title' | t }}
+          <input class="knr-product-reviews__input" type="text" name="contact[{{ 'knr.reviews.form_title' | t }}]" placeholder="{{ 'knr.reviews.title_placeholder' | t }}">
+        </label>
+        <label class="knr-product-reviews__field">
+          {{ 'knr.reviews.your_review' | t }}
+          <textarea class="knr-product-reviews__textarea" name="contact[body]" rows="5" required></textarea>
+        </label>
+        <button type="submit" class="knr-product-reviews__button knr-product-reviews__button--primary">{{ 'knr.reviews.send_review' | t }}</button>
+      </div>
+    {%- endform -%}
+  </dialog>
+
+  <dialog class="knr-product-reviews__dialog" id="knr-reviews-question-{{ section.id }}" data-ref="dialog">
+    <button type="button" class="knr-product-reviews__close" data-ref="close" aria-label="{{ 'knr.reviews.close' | t }}">×</button>
+    {%- if section.settings.question_label != blank -%}
+      <h3 class="knr-product-reviews__dialog-title">{{ section.settings.question_label | escape }}</h3>
+    {%- endif -%}
+    {%- assign question_form_id = 'knr-reviews-question-form-' | append: section.id -%}
+    {%- form 'contact', id: question_form_id -%}
+      <div class="knr-product-reviews__form">
+        {%- if form.errors -%}
+          <div class="knr-product-reviews__errors" data-ref="errors">
+            {%- for field in form.errors -%}
+              <p class="knr-product-reviews__error">{{ form.errors.messages[field] }}</p>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        <input type="hidden" name="contact[{{ 'knr.reviews.form_type' | t }}]" value="{{ 'knr.reviews.form_question' | t }}">
+        {%- if product != blank -%}
+          <input type="hidden" name="contact[{{ 'knr.reviews.form_product' | t }}]" value="{{ product.title | escape }}">
+        {%- endif -%}
+        <label class="knr-product-reviews__field">
+          {{ 'knr.reviews.name' | t }}
+          <input class="knr-product-reviews__input" type="text" name="contact[name]" autocomplete="name" required>
+        </label>
+        <label class="knr-product-reviews__field">
+          {{ 'knr.reviews.email' | t }}
+          <input class="knr-product-reviews__input" type="email" name="contact[email]" autocomplete="email" required>
+        </label>
+        <label class="knr-product-reviews__field">
+          {{ 'knr.reviews.your_question' | t }}
+          <textarea class="knr-product-reviews__textarea" name="contact[body]" rows="5" required></textarea>
+        </label>
+        <button type="submit" class="knr-product-reviews__button knr-product-reviews__button--primary">{{ 'knr.reviews.send_question' | t }}</button>
+      </div>
+    {%- endform -%}
+  </dialog>
+</knr-product-reviews>
+
+{% schema %}
+{
+  "name": "t:sections.knr-product-reviews.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.knr.heading.label",
+      "default": "t:sections.knr-product-reviews.settings.title.default"
+    },
+    {
+      "type": "range",
+      "id": "per_page",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "t:sections.knr-product-reviews.settings.per_page.label",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "filter_by_product",
+      "label": "t:sections.knr-product-reviews.settings.filter_by_product.label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "review_label",
+      "label": "t:sections.knr-product-reviews.settings.review_label.label",
+      "default": "t:sections.knr-product-reviews.settings.review_label.default"
+    },
+    {
+      "type": "text",
+      "id": "question_label",
+      "label": "t:sections.knr-product-reviews.settings.question_label.label",
+      "default": "t:sections.knr-product-reviews.settings.question_label.default"
+    },
+    {
+      "type": "text",
+      "id": "load_more_label",
+      "label": "t:sections.knr-product-reviews.settings.load_more_label.label",
+      "default": "t:sections.knr-product-reviews.settings.load_more_label.default"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.knr.colors.content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.knr.background.label",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.knr.text.label",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "t:sections.knr-product-reviews.settings.star_color.label",
+      "default": "#B8A67E"
+    },
+    {
+      "type": "color",
+      "id": "bar_background",
+      "label": "t:sections.knr-product-reviews.settings.bar_background.label",
+      "default": "#F1ECE2"
+    },
+    {
+      "type": "color",
+      "id": "bar_fill",
+      "label": "t:sections.knr-product-reviews.settings.bar_fill.label",
+      "default": "#E2D8C4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-product-reviews.name"
+    }
+  ]
+}
+{% endschema %}

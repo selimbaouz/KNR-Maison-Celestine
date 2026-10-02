@@ -1,0 +1,68 @@
+{% doc %}
+  Comparateur avant / après. Styles et comportement : assets/knr-product-testimonials.css et .js.
+
+  @param {object} image_before - Image avant
+  @param {object} image_after - Image après
+  @param {string} [label_before] - Libellé avant
+  @param {string} [label_after] - Libellé après
+  @param {string} [image_before_alt] - Texte alternatif de l'image avant
+  @param {string} [image_after_alt] - Texte alternatif de l'image après
+{% enddoc %}
+
+<knr-before-after class="knr-before-after" style="--split-position: 50%;">
+  <div class="knr-before-after__frame" data-ref="frame">
+    <div class="knr-before-after__layer knr-before-after__layer--after">
+      <div class="knr-before-after__media">
+        {% render '_knr-image',
+          wrapper_class: 'knr-before-after__image',
+          image_desktop: image_after,
+          image_desktop_class: 'knr-before-after__img',
+          image_desktop_width: 1600,
+          image_desktop_sizes: '(min-width: 990px) 70vw, 90vw',
+          image_desktop_loading: 'lazy',
+          image_desktop_alt: image_after_alt,
+          placeholder: true
+        %}
+      </div>
+    </div>
+
+    <div class="knr-before-after__layer knr-before-after__layer--before" data-ref="before">
+      <div class="knr-before-after__media">
+        {% render '_knr-image',
+          wrapper_class: 'knr-before-after__image',
+          image_desktop: image_before,
+          image_desktop_class: 'knr-before-after__img',
+          image_desktop_width: 1600,
+          image_desktop_sizes: '(min-width: 990px) 70vw, 90vw',
+          image_desktop_loading: 'lazy',
+          image_desktop_alt: image_before_alt,
+          placeholder: true
+        %}
+      </div>
+    </div>
+
+    <div class="knr-before-after__slider" data-ref="slider">
+      <span class="knr-before-after__line" aria-hidden="true"></span>
+      <button
+        type="button"
+        class="knr-before-after__handle"
+        data-ref="handle"
+        role="slider"
+        aria-label="{{ 'knr.before_after.compare' | t }}"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="50"
+      >
+        {% render '_knr-icons', icon: 'before-after' %}
+      </button>
+    </div>
+
+    {%- if label_before != blank -%}
+      <p class="knr-before-after__label knr-before-after__label--before">{{ label_before | escape }}</p>
+    {%- endif -%}
+
+    {%- if label_after != blank -%}
+      <p class="knr-before-after__label knr-before-after__label--after">{{ label_after | escape }}</p>
+    {%- endif -%}
+  </div>
+</knr-before-after>

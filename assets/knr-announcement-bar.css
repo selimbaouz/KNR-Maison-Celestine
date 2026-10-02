@@ -1,0 +1,15 @@
+.knr-announcement-bar {
+  background-color: var(--background-color, #000000);
+  color: var(--text-color, #ffffff);
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.knr-announcement-bar__message {
+  font-size: 12px;
+  line-height: 14.4px;
+  text-align: center;
+}

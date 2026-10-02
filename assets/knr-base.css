@@ -1,0 +1,68 @@
+@font-face {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('knr-inter-latin.woff2') format('woff2');
+}
+
+:root {
+  --font-body-family: Inter, sans-serif;
+  --font-heading-family: Inter, sans-serif;
+}
+
+:where([class^="knr-"] p, p[class^="knr-"]) {
+  margin: 0;
+}
+
+.knr-review-star {
+  color: #b5a282;
+}
+
+button[class^="knr-"],
+summary[class^="knr-"] {
+  cursor: pointer;
+}
+
+button.knr-product__add,
+.knr-product-card__add,
+.knr-product-cross-sell__add,
+.knr-newsletter__submit,
+.knr-product-reviews__button {
+  border-radius: 2px;
+}
+
+.knr-product__add .loading__spinner,
+.knr-product-cross-sell__add .loading__spinner,
+.knr-newsletter__submit .loading__spinner,
+.knr-product-card__add .loading__spinner {
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  transform: translate(-50%, -50%);
+}
+
+.knr-product__add .spinner,
+.knr-product-cross-sell__add .spinner,
+.knr-newsletter__submit .spinner,
+.knr-product-card__add .spinner {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.knr-product__add .path,
+.knr-product-cross-sell__add .path,
+.knr-newsletter__submit .path,
+.knr-product-card__add .path {
+  stroke: currentColor;
+}
+
+.knr-product__add.loading > span,
+.knr-product-cross-sell__add.loading > span,
+.knr-newsletter__submit.loading > span,
+.knr-product-card__add.loading > span {
+  visibility: hidden;
+}

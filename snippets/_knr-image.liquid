@@ -1,0 +1,105 @@
+{% doc %}
+  Renders an optimized image or responsive image with optional mobile version.
+
+	@param {string} [wrapper_class] - Additional CSS class for the wrapper element (optional).
+  	@param {object} image_desktop - The main image object (used for both desktop and mobile if no mobile image is provided).
+	@param {string} [image_desktop_class] - Additional CSS class for the main image (optional).
+  	@param {number} [image_desktop_width] - The width of the main image (optional).
+	@param {string} [image_desktop_sizes] - The sizes of the main image (optional).
+	@param {string} [image_desktop_fetch_priority] - The fetch priority of the main image (optional).
+	@param {string} [image_desktop_loading] - The loading of the main image (optional).
+	@param {string} [image_desktop_alt] - The alt text of the main image (optional).
+	@param {string} [breakpoint] - The breakpoint for the mobile image (optional).
+  	@param {object} [image_mobile] - The mobile image object (optional, overrides main image for mobile if provided).
+	@param {string} [image_mobile_class] - Additional CSS class for the mobile image (optional).
+  	@param {number} [image_mobile_width] - The width of the mobile image (optional).
+	@param {string} [image_mobile_sizes] - The sizes of the mobile image (optional).
+	@param {string} [image_mobile_fetch_priority] - The fetch priority of the mobile image (optional).
+	@param {string} [image_mobile_loading] - The loading of the mobile image (optional).
+	@param {string} [image_mobile_alt] - The alt text of the mobile image (optional).
+
+  @param {boolean} [placeholder] - Whether to show a placeholder if no image is provided (optional).
+	@param {string} [data] - Additional data attributes to be added to the wrapper element (optional).
+
+	@example
+    {% render '_knr-image'
+		, wrapper_class: 'wrapper-class'
+
+		, image_desktop: section.settings.image
+		, image_desktop_class: 'main-class'
+		, image_desktop_width: 2000
+		, image_desktop_sizes: '(min-width:1600px) 25vw, (min-width: 750px) 50vw, 100vw'
+		, image_desktop_fetch_priority: 'high'
+		, image_desktop_loading: 'lazy'
+		, image_desktop_alt: 'Image Desktop'
+
+		, breakpoint: '769px'
+		, image_mobile: section.settings.image_mobile
+		, image_mobile_class: 'mobile-class'
+		, image_mobile_width: 1000
+		, image_mobile_sizes: '(min-width:1600px) 25vw, (min-width: 750px) 50vw, 100vw'
+		, image_mobile_fetch_priority: 'high'
+		, image_mobile_loading: 'lazy'
+		, image_mobile_alt: 'Image Mobile'
+
+		, data: ''
+		, placeholder: true
+	%}
+{% enddoc %}
+
+{%- liquid
+	# Setup Breakpoint
+	assign breakpoint = breakpoint | default: '769px'
+	assign breakpoint_source = '<source media="(min-width: ' | append: breakpoint  | append: ')"'
+
+	# Setup Image source
+	if image_mobile != blank
+		assign replace_source = breakpoint_source
+	else
+		assign replace_source = '<img'
+	endif
+
+	# Setup Width
+	if image_desktop_width != blank
+		assign image_desktop_width = image_desktop_width
+	else
+		assign image_desktop_width = 2000
+	endif
+
+	if image_mobile_width != blank
+		assign image_mobile_width = image_mobile_width
+	else
+		assign image_mobile_width = 1000
+	endif
+-%}
+
+{% capture image_desktop_source %}
+	{% if image_desktop != blank %}
+		{{ image_desktop | image_url: width: image_desktop_width | image_tag: class: image_desktop_class, sizes: image_desktop_sizes, fetchpriority: image_desktop_fetch_priority, loading: image_desktop_loading, alt: image_desktop_alt }}
+	{% endif %}
+{% endcapture %}
+
+{% capture image_mobile_source %}
+	{% if image_mobile != blank %}
+		{{ image_mobile | image_url: width: image_mobile_width | image_tag: class: image_mobile_class, sizes: image_mobile_sizes, fetchpriority: image_mobile_fetch_priority, loading: image_mobile_loading, alt: image_mobile_alt }}
+	{% endif %}
+{% endcapture %}
+
+{% if image_desktop != blank %}
+	{% if data %}
+		<div {{ data }}>
+	{% endif %}
+		<picture class="{{ wrapper_class }}">
+			{{ image_desktop_source | replace: '<img', replace_source }}
+			{% if image_mobile != blank %}
+				{{ image_mobile_source }}
+			{% endif %}
+		</picture>
+	{% if data %}
+		</div>
+	{% endif %}
+{% else %}
+    {% if placeholder %}
+		<placeholder-image data-type="product" data-block-id="{{ block.id }}"></placeholder-image>
+    {% endif %}
+{% endif %}

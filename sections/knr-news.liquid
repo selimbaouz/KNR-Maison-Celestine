@@ -1,0 +1,125 @@
+{{ 'knr-slider.css' | asset_url | stylesheet_tag }}
+{{ 'knr-news.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'knr-slider.js' | asset_url }}" defer="defer"></script>
+
+{% liquid
+  assign news_blog = section.settings.blog
+  assign articles_count = section.settings.articles_count | plus: 0
+  if articles_count < 3
+    assign articles_count = 3
+  elsif articles_count > 4
+    assign articles_count = 4
+  endif
+%}
+
+<div
+  class="knr-news"
+  style="
+    --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+  "
+>
+  <div class="knr-news__inner page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="knr-news__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if news_blog != blank and news_blog.articles_count > 0 -%}
+      {% capture news_slides %}
+        {%- for article in news_blog.articles reversed limit: articles_count -%}
+          {% liquid
+            assign article_image = article.image
+            assign article_alt = article_image.alt | default: article.title
+            assign article_tag = article.tags | first
+            assign article_excerpt = article.excerpt | strip_html
+            if article_excerpt == blank
+              assign article_excerpt = article.content | strip_html | truncatewords: 22
+            endif
+          %}
+          <a class="knr-news__card knr-slider__slide" href="{{ article.url }}">
+            {% render '_knr-image',
+              wrapper_class: 'knr-news__media',
+              image_desktop: article_image,
+              image_desktop_class: 'knr-news__image',
+              image_desktop_width: 800,
+              image_desktop_sizes: '(min-width: 990px) 22vw, 45vw',
+              image_desktop_loading: 'lazy',
+              image_desktop_alt: article_alt,
+              placeholder: true
+            %}
+            <span class="knr-news__body">
+              {%- if article_tag != blank -%}
+                <span class="knr-news__tag">{{ article_tag | escape }}</span>
+              {%- endif -%}
+              <span class="knr-news__title">{{ article.title | escape }}</span>
+              {%- if article_excerpt != blank -%}
+                <span class="knr-news__excerpt">{{ article_excerpt | escape }}</span>
+              {%- endif -%}
+            </span>
+          </a>
+        {%- endfor -%}
+      {% endcapture %}
+      {% render '_knr-slider', slides: news_slides %}
+    {%- endif -%}
+
+    {%- if news_blog != blank and section.settings.link_label != blank -%}
+      <a class="knr-news__all" href="{{ news_blog.url }}">{{ section.settings.link_label | escape }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.knr-news.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.knr.heading.label",
+      "default": "t:sections.knr-news.settings.heading.default"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "t:sections.knr.blog.label"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "t:sections.knr-news.settings.link_label.label",
+      "default": "t:sections.knr-news.settings.link_label.default"
+    },
+    {
+      "type": "select",
+      "id": "articles_count",
+      "label": "t:sections.knr-news.settings.articles_count.label",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.knr.colors.content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.knr.background.label",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.knr.text.label",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-news.name"
+    }
+  ]
+}
+{% endschema %}

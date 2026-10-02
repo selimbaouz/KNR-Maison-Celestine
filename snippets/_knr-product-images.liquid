@@ -1,0 +1,33 @@
+{% doc %}
+  Images suivantes, sous le hero, sur desktop.
+
+  @param {object} product - Produit
+
+  @example
+  {% render '_knr-product-images', product: product %}
+{% enddoc %}
+
+{%- if product.media.size > 1 -%}
+  <div class="knr-product__gallery">
+    {%- assign gallery_skipped = false -%}
+    {%- for media in product.media -%}
+      {%- if media.media_type == 'image' -%}
+        {%- if gallery_skipped == false -%}
+          {%- assign gallery_skipped = true -%}
+        {%- else -%}
+          <div class="knr-product__gallery-item">
+            {% render '_knr-image',
+              wrapper_class: 'knr-product__picture',
+              image_desktop: media,
+              image_desktop_class: 'knr-product__image',
+              image_desktop_width: 1200,
+              image_desktop_sizes: '(min-width: 990px) 40vw, 100vw',
+              image_desktop_alt: media.alt,
+              image_desktop_loading: 'lazy'
+            %}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

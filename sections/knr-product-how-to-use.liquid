@@ -1,0 +1,132 @@
+{{ 'knr-slider.css' | asset_url | stylesheet_tag }}
+{{ 'knr-product-how-to-use.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'knr-slider.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'knr-product-how-to-use.js' | asset_url }}" defer="defer"></script>
+
+<knr-product-how-to-use
+  class="knr-product-how-to-use"
+  data-section-id="{{ section.id }}"
+  style="
+    --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+  "
+>
+  <div class="knr-product-how-to-use__inner page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="knr-product-how-to-use__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      {% capture how_to_use_slides %}
+          {%- for block in section.blocks -%}
+            {% liquid
+              assign step_image = block.settings.image
+              assign step_alt = step_image.alt | default: block.settings.title
+              assign step_number = forloop.index | prepend: '00' | slice: -2, 2
+            %}
+            <article class="knr-product-how-to-use__slide knr-slider__slide" data-ref="slide" {{ block.shopify_attributes }}>
+              {%- if step_image != blank -%}
+                {% render '_knr-image',
+                  wrapper_class: 'knr-product-how-to-use__media',
+                  image_desktop: step_image,
+                  image_desktop_class: 'knr-product-how-to-use__image',
+                  image_desktop_width: 900,
+                  image_desktop_sizes: '(min-width: 990px) 30vw, 85vw',
+                  image_desktop_loading: 'lazy',
+                  image_desktop_alt: step_alt,
+                  placeholder: false
+                %}
+              {%- endif -%}
+              <div class="knr-product-how-to-use__content">
+                <p class="knr-product-how-to-use__index">{{ step_number }}</p>
+                {%- if block.settings.title != blank -%}
+                  <p class="knr-product-how-to-use__title">{{ block.settings.title | escape }}</p>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="knr-product-how-to-use__text" data-ref="text">{{ block.settings.text | escape | newline_to_br }}</p>
+                  <button
+                    type="button"
+                    class="knr-product-how-to-use__more"
+                    data-ref="more"
+                    data-label-more="{{ 'knr.how_to_use.more' | t }}"
+                    data-label-less="{{ 'knr.how_to_use.less' | t }}"
+                    hidden
+                    aria-expanded="false"
+                  >
+                    {{ 'knr.how_to_use.more' | t }}
+                  </button>
+                {%- endif -%}
+              </div>
+            </article>
+          {%- endfor -%}
+      {% endcapture %}
+      {% render '_knr-slider', slides: how_to_use_slides %}
+    {%- endif -%}
+  </div>
+</knr-product-how-to-use>
+
+{% schema %}
+{
+  "name": "t:sections.knr-product-how-to-use.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.knr.heading.label",
+      "default": "t:sections.knr-product-how-to-use.settings.heading.default"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.knr.colors.content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.knr.background.label",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.knr.text.label",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "t:sections.knr-product-how-to-use.blocks.step.name",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.knr.image.label"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.knr.heading.label",
+          "default": "t:sections.knr-product-how-to-use.blocks.step.settings.title.default"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "t:sections.knr.text.label",
+          "default": "t:sections.knr-product-how-to-use.blocks.step.settings.text.default"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-product-how-to-use.name",
+      "blocks": [
+        { "type": "step" },
+        { "type": "step" },
+        { "type": "step" }
+      ]
+    }
+  ]
+}
+{% endschema %}

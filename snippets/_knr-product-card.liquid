@@ -1,0 +1,44 @@
+{% doc %}
+  Carte produit de l'upsell.
+
+  @param {object} product - Produit à afficher
+
+  @example
+  {% render '_knr-product-card', product: product %}
+{% enddoc %}
+
+{%- assign card_variant = product.selected_or_first_available_variant -%}
+<article class="knr-product-card">
+  <div class="knr-product-card__media">
+    {%- if product.featured_image != blank -%}
+      {% render '_knr-image',
+        wrapper_class: 'knr-product-card__picture',
+        image_desktop: product.featured_image,
+        image_desktop_class: 'knr-product-card__image',
+        image_desktop_width: 480,
+        image_desktop_sizes: '160px',
+        image_desktop_alt: product.featured_image.alt,
+        image_desktop_loading: 'lazy'
+      %}
+    {%- endif -%}
+    <product-form class="knr-product-card__buy" data-hide-errors="true">
+      {%- form 'product', product, class: 'knr-product-card__form' -%}
+        <input type="hidden" name="id" value="{{ card_variant.id }}">
+        <button
+          type="submit"
+          name="add"
+          class="knr-product-card__add"
+          aria-label="{{ 'products.product.add_to_cart' | t }}"
+          {% unless card_variant.available %}disabled{% endunless %}
+        >
+          <span class="knr-product-card__plus">{% render '_knr-icons', icon: 'add-plus' %}</span>
+          {% render 'loading-spinner' %}
+        </button>
+      {%- endform -%}
+    </product-form>
+  </div>
+  <div class="knr-product-card__content">
+    <p class="knr-product-card__title">{{ product.title | escape }}</p>
+    <p class="knr-product-card__price">{{ card_variant.price | money }}</p>
+  </div>
+</article>

@@ -4,6 +4,7 @@
   @param {boolean} [show_country_selector] - Whether to render the country selector in the drawer.
   @param {boolean} [show_language_selector] - Whether to render the language selector in the drawer.
   @param {boolean} [show_social_links] - Whether to render social links list in the drawer.
+  @param {string} [menu_icon] - `knr` uses the KNR menu icon on the summary.
 
   @example
   {% render 'header-drawer', show_language_selector: true %}
@@ -16,7 +17,11 @@
       aria-label="{{ 'sections.header.menu' | t }}"
     >
       <span>
-        {{- 'icon-hamburger.svg' | inline_asset_content -}}
+        {%- if menu_icon == 'knr' -%}
+          {% render '_knr-icons', icon: 'menu', class: 'icon icon-hamburger' %}
+        {%- else -%}
+          {{- 'icon-hamburger.svg' | inline_asset_content -}}
+        {%- endif -%}
         {{- 'icon-close.svg' | inline_asset_content -}}
       </span>
     </summary>

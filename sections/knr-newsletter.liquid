@@ -1,0 +1,169 @@
+{{ 'knr-newsletter.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'knr-newsletter.js' | asset_url }}" defer="defer"></script>
+
+{% liquid
+  assign newsletter_image = section.settings.image
+  assign newsletter_alt = newsletter_image.alt | default: section.settings.heading
+  assign heading_mobile = section.settings.heading_mobile | default: section.settings.heading
+%}
+
+<knr-newsletter
+  class="knr-newsletter"
+  style="
+    --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+    --button-background: {{ section.settings.button_background }};
+    --button-text: {{ section.settings.button_text }};
+  "
+>
+  <div class="knr-newsletter__inner page-width">
+    {% render '_knr-image',
+      wrapper_class: 'knr-newsletter__media',
+      image_desktop: newsletter_image,
+      image_desktop_class: 'knr-newsletter__image',
+      image_desktop_width: 1400,
+      image_desktop_sizes: '(min-width: 990px) 40vw, 90vw',
+      image_desktop_loading: 'lazy',
+      image_desktop_alt: newsletter_alt,
+      placeholder: true
+    %}
+
+    <div class="knr-newsletter__content">
+      {%- if section.settings.heading != blank or heading_mobile != blank -%}
+        <h2 class="knr-newsletter__heading">
+          {%- if heading_mobile != blank -%}
+            <span class="knr-newsletter__heading-mobile">{{ heading_mobile | escape }}</span>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <span class="knr-newsletter__heading-desktop">{{ section.settings.heading | escape }}</span>
+          {%- endif -%}
+        </h2>
+      {%- endif -%}
+
+      <div class="knr-newsletter__signup">
+        {% form 'customer', class: 'knr-newsletter__form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          {%- if form.posted_successfully? -%}
+            <p class="knr-newsletter__success" tabindex="-1" autofocus>
+              {{ 'newsletter.success' | t }}
+            </p>
+          {%- else -%}
+            <div class="knr-newsletter__fields">
+              <label class="visually-hidden" for="KnrNewsletter-{{ section.id }}">
+                {{ section.settings.placeholder | escape }}
+              </label>
+              <input
+                id="KnrNewsletter-{{ section.id }}"
+                class="knr-newsletter__input"
+                type="email"
+                name="contact[email]"
+                value="{{ form.email | escape }}"
+                placeholder="{{ section.settings.placeholder | escape }}"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                aria-required="true"
+                required
+                {% if form.errors %}
+                  autofocus
+                  aria-invalid="true"
+                  aria-describedby="KnrNewsletter-error-{{ section.id }}"
+                {% endif %}
+              >
+              <button class="knr-newsletter__submit" type="submit" name="commit">
+                <span>{{ section.settings.button_label | escape }}</span>
+                {% render 'loading-spinner' %}
+              </button>
+            </div>
+            {%- if form.errors -%}
+              <p class="knr-newsletter__error" id="KnrNewsletter-error-{{ section.id }}">
+                {{ form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email }}
+              </p>
+            {%- endif -%}
+          {%- endif -%}
+        {% endform %}
+
+        {%- if section.settings.note != blank -%}
+          <p class="knr-newsletter__note">{{ section.settings.note | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</knr-newsletter>
+
+{% schema %}
+{
+  "name": "t:sections.knr-newsletter.name",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.knr.image.label"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "t:sections.knr.heading.label",
+      "default": "t:sections.knr-newsletter.settings.heading.default"
+    },
+    {
+      "type": "textarea",
+      "id": "heading_mobile",
+      "label": "t:sections.knr-newsletter.settings.heading_mobile.label",
+      "default": "t:sections.knr-newsletter.settings.heading_mobile.default"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "t:sections.knr-newsletter.settings.placeholder.label",
+      "default": "t:sections.knr-newsletter.settings.placeholder.default"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.knr.button.label",
+      "default": "t:sections.knr-newsletter.settings.button_label.default"
+    },
+    {
+      "type": "textarea",
+      "id": "note",
+      "label": "t:sections.knr-newsletter.settings.note.label",
+      "default": "t:sections.knr-newsletter.settings.note.default"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.knr.colors.content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.knr.background.label",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.knr.text.label",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "t:sections.knr.button_background.label",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "t:sections.knr.button_text.label",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-newsletter.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,45 @@
+{% doc %}
+  Sélecteur de variantes et JSON des prix.
+
+  @param {object} product - Produit
+  @param {object} block - Bloc variant
+
+  @example
+  {% render '_knr-product-variant', product: product, block: block %}
+{% enddoc %}
+
+{%- unless product.has_only_default_variant -%}
+  <div class="knr-product__variant" {{ block.shopify_attributes }}>
+    {%- for option in product.options_with_values -%}
+      <div class="knr-product__sizes" data-ref="option">
+        <p class="knr-product__sizes-label">{{ option.name | escape }}</p>
+        <div class="knr-product__sizes-values">
+          {%- for value in option.values -%}
+            <button
+              type="button"
+              class="knr-product__size{% if option.selected_value == value %} knr-product__size--current{% endif %}"
+              data-ref="size"
+              data-value="{{ value | escape }}"
+              aria-pressed="{% if option.selected_value == value %}true{% else %}false{% endif %}"
+            >
+              {{ value | escape }}
+            </button>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endfor -%}
+    <script type="application/json" data-ref="variants">
+      [
+        {%- for variant in product.variants -%}
+          {
+            "id": {{ variant.id }},
+            "options": {{ variant.options | json }},
+            "available": {{ variant.available }},
+            "price": {{ variant.price | money | json }},
+            "compare": {% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | json }}{% else %}""{% endif %}
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    </script>
+  </div>
+{%- endunless -%}

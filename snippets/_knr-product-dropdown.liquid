@@ -1,0 +1,23 @@
+{% doc %}
+  Accordéon. Le premier est ouvert.
+
+  @param {object} block - Bloc dropdown
+  @param {boolean} [open] - Ouvre ce dropdown
+
+  @example
+  {% render '_knr-product-dropdown', block: block, open: dropdown_open %}
+{% enddoc %}
+
+{%- if block.settings.title != blank -%}
+  <details class="knr-product__dropdown{% if open %} knr-product__dropdown--first{% endif %}" {% if open %}open{% endif %} {{ block.shopify_attributes }}>
+    <summary class="knr-product__summary">
+      <span>{{ block.settings.title | escape }}</span>
+      <span class="knr-product__chevron" aria-hidden="true">
+        {% render '_knr-icons', icon: 'chevron-down' %}
+      </span>
+    </summary>
+    {%- if block.settings.text != blank -%}
+      <div class="knr-product__dropdown-text">{{ block.settings.text }}</div>
+    {%- endif -%}
+  </details>
+{%- endif -%}

@@ -1,0 +1,208 @@
+{{ 'knr-product-testimonials.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'knr-product-testimonials.js' | asset_url }}" defer="defer"></script>
+
+{% liquid
+  if section.settings.color_mode == 'light'
+    assign label_color = '#000000'
+    assign overlay_color = '#ffffff'
+  else
+    assign label_color = '#ffffff'
+    assign overlay_color = '#000000'
+  endif
+
+  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
+%}
+
+<knr-product-testimonials
+  class="knr-product-testimonials"
+  data-section-id="{{ section.id }}"
+  style="
+    --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+    --label-color: {{ label_color }};
+    --overlay-color: {{ overlay_color }};
+    --overlay-opacity: {{ overlay_opacity }};
+  "
+>
+  <div class="knr-product-testimonials__inner page-width">
+    <div class="knr-product-testimonials__header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="knr-product-testimonials__heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+  
+      {%- if section.settings.introduction != blank -%}
+        <p class="knr-product-testimonials__intro">{{ section.settings.introduction | escape | newline_to_br }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="knr-product-testimonials__viewport" data-ref="viewport">
+        <div class="knr-product-testimonials__track">
+        {%- for block in section.blocks -%}
+          {% liquid
+            assign image_before = block.settings.image_before
+            assign image_after = block.settings.image_after
+            assign image_before_alt = image_before.alt | default: block.settings.label_before
+            assign image_after_alt = image_after.alt | default: block.settings.label_after
+            assign reviews_rating = block.settings.rating | default: 4.5
+          %}
+          <article class="knr-product-testimonials__slide" data-ref="slide" {{ block.shopify_attributes }}>
+            {% render '_knr-before-after',
+              image_before: image_before,
+              image_after: image_after,
+              image_before_alt: image_before_alt,
+              image_after_alt: image_after_alt,
+              label_before: block.settings.label_before,
+              label_after: block.settings.label_after
+            %}
+
+            <div class="knr-product-testimonials__content">
+              <div class="knr-product-testimonials__body">
+                <div class="knr-product-testimonials__rating">
+                  {% render '_knr-review-star', reviews_rating: reviews_rating %}
+                  {%- if block.settings.author != blank -%}
+                    <span class="knr-product-testimonials__author">{{ block.settings.author | escape }}</span>
+                  {%- endif -%}
+                </div>
+
+                {%- if block.settings.quote != blank -%}
+                  <p class="knr-product-testimonials__quote">{{ block.settings.quote | escape | newline_to_br }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+        </div>
+      </div>
+
+      {%- if section.blocks.size > 1 -%}
+        <div class="knr-product-testimonials__nav">
+          <button type="button" class="knr-product-testimonials__arrow" data-ref="prev" aria-label="{{ 'knr.testimonials.previous' | t }}">
+            {% render '_knr-icons', icon: 'arrow-left' %}
+          </button>
+          <button type="button" class="knr-product-testimonials__arrow" data-ref="next" aria-label="{{ 'knr.testimonials.next' | t }}">
+            {% render '_knr-icons', icon: 'arrow-right' %}
+          </button>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</knr-product-testimonials>
+
+{% schema %}
+{
+  "name": "t:sections.knr-product-testimonials.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.knr.heading.label",
+      "default": "t:sections.knr-product-testimonials.settings.heading.default"
+    },
+    {
+      "type": "textarea",
+      "id": "introduction",
+      "label": "t:sections.knr-product-testimonials.settings.introduction.label",
+      "default": "t:sections.knr-product-testimonials.settings.introduction.default"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.knr.colors.content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.knr.background.label",
+      "default": "#F9F8F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.knr.text.label",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "color_mode",
+      "label": "t:sections.knr.contrast.label",
+      "options": [
+        { "value": "light", "label": "t:sections.knr.light.label" },
+        { "value": "dark", "label": "t:sections.knr.dark.label" }
+      ],
+      "default": "light",
+      "info": "t:sections.knr.contrast_overlay.info"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:sections.knr.overlay.label",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "t:sections.knr-product.blocks.review.name",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_before",
+          "label": "t:sections.knr-product-testimonials.blocks.review.settings.image_before.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_after",
+          "label": "t:sections.knr-product-testimonials.blocks.review.settings.image_after.label"
+        },
+        {
+          "type": "text",
+          "id": "label_before",
+          "label": "t:sections.knr-product-testimonials.blocks.review.settings.label_before.label",
+          "default": "t:sections.knr-product-testimonials.blocks.review.settings.label_before.default"
+        },
+        {
+          "type": "text",
+          "id": "label_after",
+          "label": "t:sections.knr-product-testimonials.blocks.review.settings.label_after.label",
+          "default": "t:sections.knr-product-testimonials.blocks.review.settings.label_after.default"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "t:sections.knr.stars.label",
+          "min": 0,
+          "max": 5,
+          "step": 0.5,
+          "default": 4.5,
+          "info": "t:sections.knr.stars.info"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "t:sections.knr.author.label",
+          "default": "t:sections.knr-product-testimonials.blocks.review.settings.author.default"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "t:sections.knr.reviews.label",
+          "default": "t:sections.knr-product-testimonials.blocks.review.settings.quote.default"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-product-testimonials.name",
+      "blocks": [
+        { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}

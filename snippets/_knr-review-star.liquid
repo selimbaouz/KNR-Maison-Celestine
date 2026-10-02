@@ -1,0 +1,46 @@
+{% doc %}
+  Affiche une note en étoiles, de 0 à 5, avec demi-étoile.
+
+  @param {number} reviews_rating - Nombre d'étoiles à afficher
+
+  @example
+  {% render '_knr-review-star', reviews_rating: 4.5 %}
+{% enddoc %}
+
+{% liquid
+  assign reviews_rating = reviews_rating | default: 0
+  assign rating_floor = reviews_rating | floor
+  assign rating_remainder = reviews_rating | modulo: 1
+  assign has_half_star = false
+  assign rating_label = reviews_rating | replace: '.', ','
+
+  if rating_remainder >= 0.5
+    assign has_half_star = true
+  endif
+
+  assign filled_stars = rating_floor
+
+  if has_half_star
+    assign empty_stars = 4 | minus: rating_floor
+  else
+    assign empty_stars = 5 | minus: rating_floor
+  endif
+%}
+
+<div class="knr-review-star" role="img" aria-label="{{ 'knr.product.rating' | t: rating: rating_label }}">
+  <div class="knr-review-star__list">
+    {%- if filled_stars > 0 -%}
+      {%- for i in (1..filled_stars) -%}
+        {% render '_knr-icons', icon: 'star-rating-filled', class: 'knr-review-star__icon' %}
+      {%- endfor -%}
+    {%- endif -%}
+    {%- if has_half_star -%}
+      {% render '_knr-icons', icon: 'star-rating-half-filled', class: 'knr-review-star__icon' %}
+    {%- endif -%}
+    {%- if empty_stars > 0 -%}
+      {%- for i in (1..empty_stars) -%}
+        {% render '_knr-icons', icon: 'star-rating-not-filled', class: 'knr-review-star__icon' %}
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>

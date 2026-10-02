@@ -1,0 +1,21 @@
+{% doc %}
+  Texte libre. Sert aussi à l'unité sous le prix.
+
+  @param {object} block - Bloc text
+  @param {string} [class] - Classe BEM. Défaut : knr-product__text
+  @param {object} [variant] - Variante, pour le prix devant l'unité
+
+  @example
+  {% render '_knr-product-text', block: block, class: 'knr-product__unit', variant: variant %}
+{% enddoc %}
+
+{%- assign text_class = class | default: 'knr-product__text' -%}
+{%- if block.settings.text != blank -%}
+  <div class="{{ text_class }}" {{ block.shopify_attributes }}>
+    {%- if text_class == 'knr-product__unit' -%}
+      <p><span data-ref="unit-price">{{ variant.price | money }}</span> {{ block.settings.text | strip_html }}</p>
+    {%- else -%}
+      {{ block.settings.text }}
+    {%- endif -%}
+  </div>
+{%- endif -%}

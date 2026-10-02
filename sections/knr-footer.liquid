@@ -1,0 +1,340 @@
+{{ 'knr-footer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'knr-footer.js' | asset_url }}" defer="defer"></script>
+
+<footer
+  class="knr-footer"
+  style="
+    --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+  "
+>
+  <knr-footer class="knr-footer__root page-width">
+    <div class="knr-footer__columns-wrapper">
+      <div class="knr-footer__columns">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign column_menu = block.settings.menu
+            assign column_heading = block.settings.heading
+            if column_heading == blank and column_menu != blank
+              assign column_heading = column_menu.title | remove: 'Footer - '
+            endif
+          -%}
+          <div class="knr-footer__column" data-ref="column" {{ block.shopify_attributes }}>
+            <button
+              type="button"
+              class="knr-footer__toggle"
+              data-ref="toggle"
+              aria-expanded="false"
+            >
+              <span>{{ column_heading | escape }}</span>
+              <span class="knr-footer__chevron" aria-hidden="true"></span>
+            </button>
+            <div class="knr-footer__panel" data-ref="panel">
+              {%- if column_menu != blank and column_menu.links.size > 0 -%}
+                <ul class="knr-footer__links">
+                  {%- for link in column_menu.links -%}
+                    {%- if link.url != blank -%}
+                      <li class="knr-footer__item">
+                        <a class="knr-footer__link" href="{{ link.url }}">{{ link.title | escape }}</a>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="knr-footer__about">
+        {%- if section.settings.about_heading != blank -%}
+          <p class="knr-footer__about-heading">{{ section.settings.about_heading | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.about_text != blank -%}
+          <p class="knr-footer__about-text">{{ section.settings.about_text | escape }}</p>
+        {%- endif -%}
+        <div class="knr-footer__certification-wrapper">
+          {%- if section.settings.certification_image != blank -%}
+            {% render '_knr-image',
+              wrapper_class: 'knr-footer__badge',
+              image_desktop: section.settings.certification_image,
+              image_desktop_class: 'knr-footer__badge-icon',
+              image_desktop_width: 94,
+              image_desktop_sizes: '47px',
+              image_desktop_alt: section.settings.certification_image.alt
+            %}
+          {%- endif -%}
+          {%- if section.settings.certification_text != blank -%}
+            <p class="knr-footer__certification">{{ section.settings.certification_text | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.certificate_label != blank and section.settings.certificate_url != blank -%}
+            <a class="knr-footer__certificate" href="{{ section.settings.certificate_url }}">
+              {{ section.settings.certificate_label | escape }}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+    {%- if section.settings.show_logo and section.settings.logo != blank -%}
+      <div class="knr-footer__wordmark">
+        {% render '_knr-image',
+          wrapper_class: 'knr-footer__logo',
+          image_desktop: section.settings.logo,
+          image_desktop_class: 'knr-footer__logo-mark',
+          image_desktop_width: 2880,
+          image_desktop_sizes: '100vw',
+          image_desktop_alt: shop.name
+        %}
+      </div>
+    {%- endif -%}
+
+  <div class="knr-footer__bar">
+    <div class="knr-footer__locales">
+      {%- if section.settings.enable_country_selector and localization.available_countries.size > 0 -%}
+        <div class="knr-footer__locale" data-ref="locale">
+          <button
+            type="button"
+            class="knr-footer__locale-button"
+            data-ref="locale-toggle"
+            aria-expanded="false"
+            aria-controls="KnrFooterCountry-{{ section.id }}"
+          >
+            <span>{{ localization.country.name }} ({{ localization.country.currency.symbol | default: localization.country.currency.iso_code }})</span>
+            <span class="knr-footer__chevron" aria-hidden="true"></span>
+          </button>
+          <div class="knr-footer__locale-panel" id="KnrFooterCountry-{{ section.id }}" data-ref="locale-panel" hidden>
+            {%- form 'localization', id: 'KnrFooterCountryForm', class: 'knr-footer__locale-form' -%}
+              <ul class="knr-footer__locale-list" role="listbox">
+                {%- for country in localization.available_countries -%}
+                  <li class="knr-footer__locale-item">
+                    <button
+                      type="submit"
+                      class="knr-footer__locale-option{% if country.iso_code == localization.country.iso_code %} knr-footer__locale-option--current{% endif %}"
+                      name="country_code"
+                      value="{{ country.iso_code }}"
+                      role="option"
+                      aria-selected="{% if country.iso_code == localization.country.iso_code %}true{% else %}false{% endif %}"
+                    >
+                      {{- country.name }} ({{ country.currency.symbol | default: country.currency.iso_code }})
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endform -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.enable_language_selector and localization.available_languages.size > 0 -%}
+        <div class="knr-footer__locale" data-ref="locale">
+          <button
+            type="button"
+            class="knr-footer__locale-button"
+            data-ref="locale-toggle"
+            aria-expanded="false"
+            aria-controls="KnrFooterLanguage-{{ section.id }}"
+          >
+            <span>{{ localization.language.endonym_name | capitalize }}</span>
+            <span class="knr-footer__chevron" aria-hidden="true"></span>
+          </button>
+          <div class="knr-footer__locale-panel" id="KnrFooterLanguage-{{ section.id }}" data-ref="locale-panel" hidden>
+            {%- form 'localization', id: 'KnrFooterLanguageForm', class: 'knr-footer__locale-form' -%}
+              <ul class="knr-footer__locale-list" role="listbox">
+                {%- for language in localization.available_languages -%}
+                  <li class="knr-footer__locale-item">
+                    <button
+                      type="submit"
+                      class="knr-footer__locale-option{% if language.iso_code == localization.language.iso_code %} knr-footer__locale-option--current{% endif %}"
+                      name="locale_code"
+                      value="{{ language.iso_code }}"
+                      role="option"
+                      aria-selected="{% if language.iso_code == localization.language.iso_code %}true{% else %}false{% endif %}"
+                    >
+                      {{- language.endonym_name | capitalize -}}
+                    </button>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endform -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <p class="knr-footer__copyright">© {{ 'now' | date: '%Y' }} {{ section.settings.copyright | escape }}</p>
+
+    {%- liquid
+      assign facebook_url = section.settings.facebook_url | default: settings.social_facebook_link
+      assign instagram_url = section.settings.instagram_url | default: settings.social_instagram_link
+      assign tiktok_url = section.settings.tiktok_url | default: settings.social_tiktok_link
+      assign linkedin_url = section.settings.linkedin_url
+    -%}
+    {%- if facebook_url != blank or instagram_url != blank or tiktok_url != blank or linkedin_url != blank -%}
+      <ul class="knr-footer__socials">
+        {%- if facebook_url != blank -%}
+          <li>
+            <a class="knr-footer__social" href="{{ facebook_url }}" target="_blank" rel="noopener" aria-label="{{ 'knr.social.facebook' | t }}">
+              {% render '_knr-icons', icon: 'facebook' %}
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if instagram_url != blank -%}
+          <li>
+            <a class="knr-footer__social" href="{{ instagram_url }}" target="_blank" rel="noopener" aria-label="{{ 'knr.social.instagram' | t }}">
+              {% render '_knr-icons', icon: 'instagram' %}
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if tiktok_url != blank -%}
+          <li>
+            <a class="knr-footer__social" href="{{ tiktok_url }}" target="_blank" rel="noopener" aria-label="{{ 'knr.social.tiktok' | t }}">
+              {% render '_knr-icons', icon: 'tiktok' %}
+            </a>
+          </li>
+        {%- endif -%}
+        {%- if linkedin_url != blank -%}
+          <li>
+            <a class="knr-footer__social" href="{{ linkedin_url }}" target="_blank" rel="noopener" aria-label="{{ 'knr.social.linkedin' | t }}">
+              {% render '_knr-icons', icon: 'linkedin' %}
+            </a>
+          </li>
+        {%- endif -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</div>
+  </knr-footer>
+</footer>
+
+{% schema %}
+{
+  "name": "t:sections.knr-footer.name",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "t:sections.knr-footer.settings.show_logo.label",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:sections.knr.logo.label"
+    },
+    {
+      "type": "text",
+      "id": "about_heading",
+      "label": "t:sections.knr-footer.settings.about_heading.label",
+      "default": "t:sections.knr-footer.settings.about_heading.default"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text",
+      "label": "t:sections.knr-footer.settings.about_text.label",
+      "default": "t:sections.knr-footer.settings.about_text.default"
+    },
+    {
+      "type": "image_picker",
+      "id": "certification_image",
+      "label": "t:sections.knr-footer.settings.certification_image.label"
+    },
+    {
+      "type": "text",
+      "id": "certification_text",
+      "label": "t:sections.knr-footer.settings.certification_text.label",
+      "default": "t:sections.knr-footer.settings.certification_text.default"
+    },
+    {
+      "type": "text",
+      "id": "certificate_label",
+      "label": "t:sections.knr-footer.settings.certificate_label.label",
+      "default": "t:sections.knr-footer.settings.certificate_label.default"
+    },
+    {
+      "type": "url",
+      "id": "certificate_url",
+      "label": "t:sections.knr-footer.settings.certificate_url.label"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "t:sections.knr-footer.settings.copyright.label",
+      "default": "t:sections.knr-footer.settings.copyright.default"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "t:sections.knr.social.facebook.label"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "t:sections.knr.social.instagram.label"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "t:sections.knr.social.tiktok.label"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "t:sections.knr.social.linkedin.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "label": "t:sections.knr-footer.settings.country.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "label": "t:sections.knr-footer.settings.language.label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.knr.colors.content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.knr.background.label",
+      "default": "#F7F5F2"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.knr.text.label",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "t:sections.knr-footer.blocks.column.name",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.knr.heading.label"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "t:sections.knr.menu.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-footer.name"
+    }
+  ]
+}
+{% endschema %}

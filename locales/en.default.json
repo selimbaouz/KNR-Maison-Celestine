@@ -537,5 +537,64 @@
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
     }
+  },
+  "knr": {
+    "header": {
+      "store": "Magasin"
+    },
+    "product": {
+      "previous_image": "Image précédente",
+      "next_image": "Image suivante",
+      "rating": "{{ rating }} sur 5",
+      "next_products": "Produits suivants"
+    },
+    "slider": {
+      "part": "Partie {{ index }}"
+    },
+    "before_after": {
+      "compare": "Comparer avant et après"
+    },
+    "testimonials": {
+      "previous": "Avis précédent",
+      "next": "Avis suivant"
+    },
+    "how_to_use": {
+      "more": "Lire plus",
+      "less": "Lire moins"
+    },
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "tiktok": "TikTok",
+      "linkedin": "LinkedIn"
+    },
+    "reviews": {
+      "average": "{{ rating }} sur 5",
+      "based_on": "Basé sur {{ count }} avis",
+      "filter": "Filtrer",
+      "all_ratings": "Toutes les notes",
+      "star": "{{ count }} étoile",
+      "stars": "{{ count }} étoiles",
+      "verified": "vérifié",
+      "empty": "Aucun avis pour le moment.",
+      "empty_filter": "Aucun avis pour cette note.",
+      "success": "Merci ! Votre message a bien été envoyé. Il sera publié après modération.",
+      "close": "Fermer",
+      "your_rating": "Votre note",
+      "name": "Nom",
+      "email": "E-mail",
+      "title": "Titre",
+      "title_placeholder": "Ex : Après usage d'1 mois",
+      "your_review": "Votre avis",
+      "your_question": "Votre question",
+      "send_review": "Envoyer mon avis",
+      "send_question": "Envoyer ma question",
+      "form_type": "Type",
+      "form_review": "Avis client",
+      "form_question": "Question client",
+      "form_product": "Produit",
+      "form_rating": "Note",
+      "form_title": "Titre"
+    }
   }
 }

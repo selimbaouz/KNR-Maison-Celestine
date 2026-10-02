@@ -1,0 +1,126 @@
+.knr-news {
+  background-color: var(--background-color, #ffffff);
+  color: var(--text-color, #000000);
+  padding: 40px 0 64px;
+}
+
+.knr-news__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.knr-news__heading {
+  margin: 0;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -4%;
+}
+
+.knr-news__all {
+  align-self: center;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: -2%;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.knr-news__all:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+.knr-news__card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.knr-news__media {
+  display: block;
+  width: 100%;
+  height: 255px;
+  overflow: hidden;
+}
+
+.knr-news__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.knr-news__body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.knr-news__tag {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: -2%;
+}
+
+.knr-news__tag::after {
+  content: "";
+  width: 16px;
+  height: 0.8px;
+  background-color: #b5a282;
+}
+
+.knr-news__title {
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -2%;
+  max-width: 210px;
+}
+
+.knr-news__excerpt {
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: -2%;
+  max-width: 320px;
+}
+
+@media (min-width: 990px) {
+  .knr-news {
+    padding: 40px 0;
+  }
+
+  .knr-news .knr-news__card.knr-slider__slide {
+    gap: 16px;
+    cursor: pointer;
+  }
+
+  .knr-news__media {
+    height: 334px;
+  }
+
+  .knr-news__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 24px;
+    row-gap: 40px;
+    align-items: end;
+  }
+
+  .knr-news__all {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    align-self: end;
+  }
+
+  .knr-news .knr-slider {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}

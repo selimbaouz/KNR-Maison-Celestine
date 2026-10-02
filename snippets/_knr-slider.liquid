@@ -1,0 +1,45 @@
+{% doc %}
+  Slider mobile (Embla + barre de progression). Sur desktop, la piste devient une grille
+  avec une colonne par slide. Le CSS et le JS sont chargés par la section qui rend ce snippet.
+
+  @param {string} slides - HTML des slides. Chaque slide porte la classe knr-slider__slide.
+  @param {boolean} [carousel] - Garde Embla aussi sur desktop.
+
+  @example
+  {% render '_knr-slider', slides: slides %}
+{% enddoc %}
+
+{% liquid
+  assign slider_columns = slides | split: 'knr-slider__slide' | size | minus: 1
+  if slider_columns < 1
+    assign slider_columns = 1
+  endif
+%}
+
+<knr-slider
+  class="knr-slider{% if carousel %} knr-slider--carousel{% endif %}"
+  style="--slider-columns: {{ slider_columns }};"
+>
+  <div class="knr-slider__viewport" data-ref="viewport">
+    <div class="knr-slider__track">
+      {{ slides }}
+    </div>
+  </div>
+  <div class="knr-slider__progress" data-ref="progress">
+    {%- if carousel -%}
+      {%- for index in (1..slider_columns) -%}
+        <button
+          type="button"
+          class="knr-slider__progress-dash{% if forloop.first %} knr-slider__progress-dash--active{% endif %}"
+          data-ref="progress-dash"
+          aria-label="{{ 'knr.slider.part' | t: index: forloop.index }}"
+          {% if forloop.first %}
+            aria-current="true"
+          {% endif %}
+        ></button>
+      {%- endfor -%}
+    {%- else -%}
+      <span class="knr-slider__progress-bar" data-ref="progress-bar"></span>
+    {%- endif -%}
+  </div>
+</knr-slider>

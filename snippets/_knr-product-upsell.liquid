@@ -1,0 +1,28 @@
+{% doc %}
+  Produits complémentaires.
+
+  @param {object} block - Bloc upsell
+
+  @example
+  {% render '_knr-product-upsell', block: block %}
+{% enddoc %}
+
+{%- if block.settings.products != blank and block.settings.products.count > 0 -%}
+  <div class="knr-product__upsell" {{ block.shopify_attributes }}>
+    <div class="knr-product__upsell-head">
+      {%- if block.settings.heading != blank -%}
+        <p class="knr-product__upsell-title">{{ block.settings.heading | escape }}</p>
+      {%- endif -%}
+      <button type="button" class="knr-product__upsell-next" data-ref="upsell-next" aria-label="{{ 'knr.product.next_products' | t }}">
+        {% render '_knr-icons', icon: 'arrow-right' %}
+      </button>
+    </div>
+    <div class="knr-product__upsell-viewport" data-ref="upsell-viewport">
+      <div class="knr-product__upsell-list">
+        {%- for upsell_product in block.settings.products -%}
+          {% render '_knr-product-card', product: upsell_product %}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

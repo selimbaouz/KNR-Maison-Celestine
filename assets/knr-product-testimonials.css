@@ -1,0 +1,279 @@
+.knr-product-testimonials {
+  display: block;
+  background-color: var(--background-color, #F9F8F5);
+  color: var(--text-color, #000000);
+  padding: 64px 24px 40px 24px;
+}
+
+.knr-product-testimonials__header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.knr-product-testimonials__heading {
+  margin: 0;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -4%;
+  text-align: center;
+}
+
+.knr-product-testimonials__intro {
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: -2%;
+  text-align: center;
+}
+
+.knr-product-testimonials__viewport {
+  overflow: hidden;
+}
+
+.knr-product-testimonials__track {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+}
+
+.knr-product-testimonials__slide {
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.knr-product-testimonials__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.knr-product-testimonials__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 40px;
+  gap: 40px;
+}
+
+.knr-product-testimonials__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 970px;
+  gap: 40px;
+}
+
+.knr-product-testimonials__rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.knr-product-testimonials__author {
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: -4%;
+  color: #B5A282;
+}
+
+.knr-product-testimonials__quote {
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -2%;
+  text-align: center;
+}
+
+.knr-product-testimonials__nav {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+
+.knr-product-testimonials__arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.knr-product-testimonials__arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.knr-product-testimonials__arrow:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+@media (min-width: 990px) {
+  .knr-product-testimonials {
+    padding: 80px 0 72px;
+  }
+
+  .knr-product-testimonials__heading {
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  .knr-product-testimonials__intro {
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .knr-product-testimonials__quote {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -4%;
+  }
+
+}
+
+.knr-review-star__list {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.knr-before-after {
+  display: block;
+  width: 100%;
+  --split-position: 50%;
+}
+
+.knr-before-after__frame {
+  position: relative;
+  width: 100%;
+  height: 192px;
+  overflow: hidden;
+  user-select: none;
+}
+
+.knr-before-after__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--overlay-color, #ffffff);
+  opacity: var(--overlay-opacity, 0.2);
+  pointer-events: none;
+}
+
+.knr-before-after__layer {
+  position: absolute;
+  inset: 0;
+}
+
+.knr-before-after__layer--before {
+  clip-path: inset(0 calc(100% - var(--split-position)) 0 0);
+}
+
+.knr-before-after__media,
+.knr-before-after__image,
+.knr-before-after__img {
+  width: 100%;
+  height: 100%;
+}
+
+.knr-before-after__image,
+.knr-before-after__img {
+  display: block;
+}
+
+.knr-before-after__img {
+  object-fit: cover;
+}
+
+.knr-before-after__slider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split-position);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  transform: translateX(-50%);
+  touch-action: none;
+  cursor: ew-resize;
+}
+
+.knr-before-after__line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background-color: #ffffff;
+  transform: translateX(-50%);
+}
+
+.knr-before-after__handle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: #ffffff;
+  cursor: ew-resize;
+}
+
+.knr-before-after__handle:focus-visible {
+  outline: 1px solid #000000;
+  outline-offset: 2px;
+}
+
+.knr-before-after__label {
+  position: absolute;
+  top: 24px;
+  z-index: 2;
+  color: var(--label-color, #000000);
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: -2%;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.knr-before-after__label--before {
+  left: 24px;
+}
+
+.knr-before-after__label--after {
+  right: 24px;
+}
+
+@media (min-width: 990px) {
+  .knr-before-after__frame {
+    height: 640px;
+  }
+
+  .knr-before-after__label {
+    top: 40px;
+  }
+
+  .knr-before-after__label--before {
+    left: 40px;
+  }
+
+  .knr-before-after__label--after {
+    right: 40px;
+  }
+}

@@ -1,0 +1,11 @@
+{% doc %}
+  Titre du produit.
+
+  @param {object} product - Produit
+  @param {object} block - Bloc title
+
+  @example
+  {% render '_knr-product-title', product: product, block: block %}
+{% enddoc %}
+
+<h1 class="knr-product__title" {{ block.shopify_attributes }}>{{ product.title | escape }}</h1>
