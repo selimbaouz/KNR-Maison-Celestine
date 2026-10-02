@@ -1,0 +1,13 @@
+{% doc %}
+  Badge texte.
+
+  @param {object} block - Bloc badge
+  @param {boolean} [editor] - Attributs de l'éditeur. Absent sur le hero.
+
+  @example
+  {% render '_knr-product-badge', block: block, editor: true %}
+{% enddoc %}
+
+{%- if block.settings.text != blank -%}
+  <span class="knr-product__badge"{% if editor %} {{ block.shopify_attributes }}{% endif %}>{{ block.settings.text | escape }}</span>
+{%- endif -%}

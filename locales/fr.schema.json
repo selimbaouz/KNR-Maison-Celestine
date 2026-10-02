@@ -3405,6 +3405,492 @@
           "label": "Ouvert par défaut"
         }
       }
+    },
+    "knr": {
+      "background": {
+        "label": "Fond"
+      },
+      "card_background": {
+        "label": "Fond de la fiche"
+      },
+      "text": {
+        "label": "Texte"
+      },
+      "heading": {
+        "label": "Titre"
+      },
+      "image": {
+        "label": "Image"
+      },
+      "button": {
+        "label": "Bouton"
+      },
+      "button_background": {
+        "label": "Fond du bouton"
+      },
+      "button_text": {
+        "label": "Texte du bouton"
+      },
+      "colors": {
+        "content": "Couleurs"
+      },
+      "contrast": {
+        "label": "Contraste"
+      },
+      "light": {
+        "label": "Clair"
+      },
+      "dark": {
+        "label": "Foncé"
+      },
+      "contrast_simple": {
+        "info": "Light : texte noir. Dark : texte blanc."
+      },
+      "contrast_overlay": {
+        "info": "Light : texte noir, voile blanc. Dark : texte blanc, voile noir."
+      },
+      "overlay": {
+        "label": "Opacité du voile"
+      },
+      "menu": {
+        "label": "Menu"
+      },
+      "author": {
+        "label": "Auteur"
+      },
+      "stars": {
+        "label": "Étoiles",
+        "info": "Demi-étoile possible, par exemple 4,5."
+      },
+      "link": {
+        "label": "Lien"
+      },
+      "logo": {
+        "label": "Logo"
+      },
+      "reviews": {
+        "label": "Avis",
+        "info": "Vide : le nombre d'avis n'est pas affiché."
+      },
+      "question": {
+        "label": "Question"
+      },
+      "answer": {
+        "label": "Réponse"
+      },
+      "blog": {
+        "label": "Blog"
+      },
+      "image_position": {
+        "label": "Position image mobile",
+        "info": "Pourcentage horizontal sur mobile."
+      },
+      "hero_position": {
+        "label": "Position 1re image",
+        "info": "Pourcentage horizontal sur mobile. 50 centre le produit."
+      },
+      "social": {
+        "facebook": {
+          "label": "Facebook"
+        },
+        "instagram": {
+          "label": "Instagram"
+        },
+        "tiktok": {
+          "label": "TikTok"
+        },
+        "linkedin": {
+          "label": "LinkedIn"
+        }
+      }
+    },
+    "knr-header": {
+      "name": "KNR - En-tête",
+      "settings": {
+        "menu_mobile": {
+          "label": "Menu mobile"
+        },
+        "store_url": {
+          "label": "Lien magasin"
+        }
+      }
+    },
+    "knr-announcement-bar": {
+      "name": "KNR - Bandeau",
+      "settings": {
+        "text": {
+          "default": "Livraison estimée sous 48h"
+        }
+      }
+    },
+    "knr-footer": {
+      "name": "KNR - Pied de page",
+      "settings": {
+        "show_logo": {
+          "label": "Afficher le logo"
+        },
+        "about_heading": {
+          "label": "Titre à propos",
+          "default": "À propos de Maison Célestine"
+        },
+        "about_text": {
+          "label": "Texte à propos",
+          "default": "Maison Célestine est une marque de soins anti-âge haut de gamme formulée autour d'actifs rares et certifiés biologiques, guidée par une expertise médicale et un rituel simple, précis et efficace."
+        },
+        "certification_image": {
+          "label": "Logo certification"
+        },
+        "certification_text": {
+          "label": "Texte certification",
+          "default": "Certifié COSMOS ORGANIC par ECOCERT Greenlife"
+        },
+        "certificate_label": {
+          "label": "Lien certificat",
+          "default": "Voir le certificat"
+        },
+        "certificate_url": {
+          "label": "URL du certificat"
+        },
+        "copyright": {
+          "label": "Copyright",
+          "default": "Maison Célestine. Tous droits réservés."
+        },
+        "country": {
+          "label": "Sélecteur de pays"
+        },
+        "language": {
+          "label": "Sélecteur de langue"
+        }
+      },
+      "blocks": {
+        "column": {
+          "name": "Colonne"
+        }
+      }
+    },
+    "knr-product": {
+      "name": "KNR - Produit",
+      "blocks": {
+        "breadcrumb": {
+          "name": "Fil d'Ariane"
+        },
+        "badge": {
+          "name": "Badge",
+          "settings": {
+            "text": {
+              "default": "Unifié"
+            }
+          }
+        },
+        "title": {
+          "name": "Titre"
+        },
+        "review": {
+          "name": "Avis",
+          "settings": {
+            "show_note": {
+              "label": "Afficher la note"
+            },
+            "show_count": {
+              "label": "Afficher le nombre d'avis"
+            },
+            "count": {
+              "default": "200 avis"
+            }
+          }
+        },
+        "text": {
+          "name": "Texte",
+          "settings": {
+            "text": {
+              "default": "<p>Yuka 100/100 · INCI Beauty 20/20</p>"
+            }
+          }
+        },
+        "description": {
+          "name": "Description",
+          "settings": {
+            "text": {
+              "info": "Vide : description du produit."
+            }
+          }
+        },
+        "variant": {
+          "name": "Variante"
+        },
+        "price": {
+          "name": "Prix"
+        },
+        "buy": {
+          "name": "CTA",
+          "settings": {
+            "label": {
+              "label": "Libellé",
+              "default": "Ajouter au panier"
+            }
+          }
+        },
+        "shipping": {
+          "name": "Livraison",
+          "settings": {
+            "text": {
+              "default": "En stock, livraison estimée #estimated_date#.",
+              "info": "#estimated_date# est remplacé par la date calculée."
+            },
+            "delay_days": {
+              "label": "Délai (jours, hors dimanche)"
+            },
+            "cutoff_hour": {
+              "label": "Heure limite"
+            },
+            "scroll": {
+              "label": "Défilement"
+            },
+            "part_2": {
+              "label": "Partie 2"
+            },
+            "part_3": {
+              "label": "Partie 3"
+            },
+            "part_4": {
+              "label": "Partie 4"
+            }
+          }
+        },
+        "dropdown": {
+          "name": "Dépliant",
+          "settings": {
+            "title": {
+              "default": "Description"
+            }
+          }
+        },
+        "upsell": {
+          "name": "Upsell",
+          "settings": {
+            "heading": {
+              "default": "Complétez votre rituel"
+            },
+            "products": {
+              "label": "Produits"
+            }
+          }
+        }
+      },
+      "presets": {
+        "badge_protected": "Protégé",
+        "unit": "<p>par 100 mL</p>",
+        "benefits": "Bienfaits",
+        "ingredients": "Ingrédients clés",
+        "skin": "Adapté aux peaux"
+      }
+    },
+    "knr-newsletter": {
+      "name": "KNR - Newsletter",
+      "settings": {
+        "heading": {
+          "default": "L'alliance de la science botanique et du luxe naturel pour une peau visiblement rajeunie en 4 semaines."
+        },
+        "heading_mobile": {
+          "label": "Titre mobile",
+          "default": "Sérum précieux régénérant — l'alliance de la science botanique et du luxe naturel pour une peau visiblement rajeunie en 4 semaines."
+        },
+        "placeholder": {
+          "label": "Placeholder",
+          "default": "E-mail"
+        },
+        "note": {
+          "label": "Mention",
+          "default": "Formule brevetée, testée dermatologiquement, 97 % d'ingrédients d'origine naturelle."
+        },
+        "button_label": {
+          "default": "S'inscrire"
+        }
+      }
+    },
+    "knr-product-cross-sell": {
+      "name": "KNR - Cross-sell",
+      "settings": {
+        "product": {
+          "label": "Produit"
+        },
+        "image": {
+          "info": "Remplace l'image du produit."
+        },
+        "button_label": {
+          "default": "Ajouter au panier"
+        }
+      }
+    },
+    "knr-product-faq": {
+      "name": "KNR - FAQ",
+      "settings": {
+        "heading": {
+          "default": "Questions fréquentes"
+        }
+      },
+      "blocks": {
+        "item": {
+          "name": "Question",
+          "settings": {
+            "question": {
+              "default": "Comment utiliser ?"
+            },
+            "answer": {
+              "default": "Appliquez 3 à 5 gouttes le soir sur visage et cou préalablement nettoyés. Massez délicatement en mouvements ascendants jusqu'à absorption complète. Peut s'utiliser seul ou sous votre crème habituelle."
+            }
+          }
+        }
+      }
+    },
+    "knr-product-reviews": {
+      "name": "KNR - Avis clients",
+      "settings": {
+        "title": {
+          "default": "Avis clients"
+        },
+        "per_page": {
+          "label": "Avis affichés à la fois"
+        },
+        "filter_by_product": {
+          "label": "Sur une page produit, n'afficher que les avis de ce produit"
+        },
+        "review_label": {
+          "label": "Bouton avis",
+          "default": "Écrire un avis"
+        },
+        "question_label": {
+          "label": "Bouton question",
+          "default": "Poser une question"
+        },
+        "load_more_label": {
+          "label": "Bouton charger plus",
+          "default": "Charger plus"
+        },
+        "star_color": {
+          "label": "Couleur des étoiles"
+        },
+        "bar_background": {
+          "label": "Fond de la barre"
+        },
+        "bar_fill": {
+          "label": "Remplissage de la barre"
+        }
+
+      }
+    },
+    "knr-news": {
+      "name": "KNR - Actualités",
+      "settings": {
+        "heading": {
+          "default": "Actualités"
+        },
+        "link_label": {
+          "label": "Libellé du lien",
+          "default": "Voir tous les articles"
+        },
+        "articles_count": {
+          "label": "Nombre d'articles"
+        }
+      }
+    },
+    "knr-product-testimonials": {
+      "name": "KNR - Témoignages",
+      "settings": {
+        "heading": {
+          "default": "Ce que disent nos clientes"
+        },
+        "introduction": {
+          "label": "Introduction",
+          "default": "Des transformations visibles dès 4 semaines. Nos clientes témoignent d'une peau visiblement régénérée, plus ferme et lumineuse."
+        }
+      },
+      "blocks": {
+        "review": {
+          "name": "Avis",
+          "settings": {
+            "image_before": {
+              "label": "Image avant"
+            },
+            "image_after": {
+              "label": "Image après"
+            },
+            "label_before": {
+              "label": "Libellé avant",
+              "default": "Avant"
+            },
+            "label_after": {
+              "label": "Libellé après",
+              "default": "Après"
+            },
+            "author": {
+              "default": "Clara T."
+            },
+            "quote": {
+              "default": "J'utilise ce sérum depuis trois mois et la différence est saisissante. Mes rides d'expression se sont considérablement atténuées et mon teint a retrouvé une luminosité que je n'avais plus depuis des années. Une texture soyeuse qui pénètre instantanément. Je ne peux plus m'en passer."
+            }
+          }
+        }
+      }
+    },
+    "knr-reinsurance": {
+      "name": "KNR - Réassurance",
+      "blocks": {
+        "item": {
+          "name": "Message",
+          "settings": {
+            "title": {
+              "default": "Livraison offerte"
+            },
+            "text": {
+              "default": "Livraison offerte dès 60 € d'achat en France métropolitaine."
+            }
+          }
+        }
+      },
+      "presets": {
+        "returns_title": "Retours gratuits",
+        "returns_text": "Retours acceptés jusqu'à 30 jours après réception.",
+        "payment_title": "Paiement sécurisé",
+        "payment_text": "Paiement 100 % sécurisé par carte bancaire, PayPal ou virement.",
+        "service_title": "Service client",
+        "service_text": "Du lundi au vendredi de 9h à 18h par email et téléphone."
+      }
+    },
+    "knr-product-how-to-use": {
+      "name": "KNR - Utilisation",
+      "settings": {
+        "heading": {
+          "default": "Mode d'emploi"
+        }
+      },
+      "blocks": {
+        "step": {
+          "name": "Étape",
+          "settings": {
+            "title": {
+              "default": "Découvrir"
+            },
+            "text": {
+              "default": "Décrivez cette étape."
+            }
+          }
+        }
+      }
+    },
+    "knr-product-commitments": {
+      "name": "KNR - Engagements",
+      "settings": {
+        "title": {
+          "default": "Notre engagement pour une beauté régénérée"
+        },
+        "content": {
+          "default": "Fusionnant l'huile de rosier muscat, le rétinol végétal et l'extrait de cactus, notre sérum pénètre en profondeur pour stimuler le renouvellement cellulaire, atténuer les rides et redonner à la peau son éclat et sa fermeté naturels."
+        },
+        "author": {
+          "default": "Sophie M."
+        }
+      }
     }
   }
 }

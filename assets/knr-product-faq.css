@@ -1,0 +1,90 @@
+.knr-product-faq {
+  display: block;
+  background-color: var(--background-color, #ffffff);
+  color: var(--text-color, #000000);
+  padding: 40px 0;
+}
+
+.knr-product-faq__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.knr-product-faq__heading {
+  width: 100%;
+  margin: 0;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -4%;
+  text-align: center;
+}
+
+.knr-product-faq__list {
+  width: 100%;
+  max-width: 720px;
+}
+
+.knr-product-faq__item {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 0;
+  border-top: 1px solid #c2c2c2;
+}
+
+.knr-product-faq__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -2%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.knr-product-faq__toggle:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+.knr-product-faq__icon {
+  display: flex;
+  flex: 0 0 auto;
+  transition: transform 0.2s ease;
+}
+
+.knr-product-faq__item--open .knr-product-faq__icon {
+  transform: rotate(180deg);
+}
+
+.knr-product-faq__answer {
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: -2%;
+}
+
+@media (min-width: 990px) {
+  .knr-product-faq {
+    padding: 120px 0;
+  }
+
+  .knr-product-faq__inner {
+    gap: 80px;
+  }
+
+  .knr-product-faq__heading {
+    font-size: 40px;
+    line-height: 48px;
+  }
+}

@@ -1,0 +1,19 @@
+{% doc %}
+  Description. Le réglage vide reprend celle du produit.
+
+  @param {object} product - Produit
+  @param {object} block - Bloc description
+
+  @example
+  {% render '_knr-product-description', product: product, block: block %}
+{% enddoc %}
+
+{%- if block.settings.text != blank or product.description != blank -%}
+  <div class="knr-product__description" {{ block.shopify_attributes }}>
+    {%- if block.settings.text != blank -%}
+      {{ block.settings.text }}
+    {%- else -%}
+      {{ product.description }}
+    {%- endif -%}
+  </div>
+{%- endif -%}

@@ -1,0 +1,426 @@
+{{ 'knr-slider.css' | asset_url | stylesheet_tag }}
+{{ 'knr-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'knr-slider.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'knr-product.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign dropdown_count = 0
+-%}
+
+<knr-product
+  class="knr-product"
+  style="
+    --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+    --card-background: {{ section.settings.card_background }};
+    --hero-position: {{ section.settings.hero_position }}%;
+  "
+>
+  {% render '_knr-product-gallery', product: product, section: section %}
+
+  <div class="knr-product__body page-width">
+    <div class="knr-product__card">
+      {%- assign rendered_until = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if forloop.index <= rendered_until -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        {%- case block.type -%}
+          {%- when 'breadcrumb' -%}
+            {% render '_knr-product-breadcrumb', product: product, block: block %}
+
+          {%- when 'badge' or 'title' or 'review' or 'text' or 'description' -%}
+            {%- assign intro_start = forloop.index0 -%}
+            {%- assign intro_skip = 0 -%}
+            <div class="knr-product__intro">
+              {%- for inner in section.blocks offset: intro_start -%}
+                {%- if forloop.index <= intro_skip -%}
+                  {%- continue -%}
+                {%- endif -%}
+                {%- unless inner.type == 'badge' or inner.type == 'title' or inner.type == 'review' or inner.type == 'text' or inner.type == 'description' -%}
+                  {%- break -%}
+                {%- endunless -%}
+                {%- assign rendered_until = intro_start | plus: forloop.index -%}
+
+                {%- if inner.type == 'badge' -%}
+                  {%- assign badge_start = intro_start | plus: forloop.index0 -%}
+                  <div class="knr-product__badges">
+                    {%- for badge_block in section.blocks offset: badge_start -%}
+                      {%- if badge_block.type != 'badge' -%}
+                        {%- break -%}
+                      {%- endif -%}
+                      {%- assign intro_skip = forloop.parentloop.index | plus: forloop.index | minus: 1 -%}
+                      {%- assign rendered_until = badge_start | plus: forloop.index -%}
+                      {% render '_knr-product-badge', block: badge_block, editor: true %}
+                    {%- endfor -%}
+                  </div>
+                {%- elsif inner.type == 'title' or inner.type == 'review' -%}
+                  {%- assign heading_start = intro_start | plus: forloop.index0 -%}
+                  <div class="knr-product__heading">
+                    {%- for heading_block in section.blocks offset: heading_start -%}
+                      {%- unless heading_block.type == 'title' or heading_block.type == 'review' -%}
+                        {%- break -%}
+                      {%- endunless -%}
+                      {%- assign intro_skip = forloop.parentloop.index | plus: forloop.index | minus: 1 -%}
+                      {%- assign rendered_until = heading_start | plus: forloop.index -%}
+                      {%- if heading_block.type == 'title' -%}
+                        {% render '_knr-product-title', product: product, block: heading_block %}
+                      {%- else -%}
+                        {% render '_knr-product-rating', block: heading_block %}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                {%- elsif inner.type == 'text' -%}
+                  {% render '_knr-product-text', block: inner %}
+                {%- elsif inner.type == 'description' -%}
+                  {% render '_knr-product-description', product: product, block: inner %}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+          {%- when 'variant' or 'price' or 'buy' or 'shipping' -%}
+            {%- assign purchase_start = forloop.index0 -%}
+            {%- assign purchase_skip = 0 -%}
+            <div class="knr-product__purchase">
+              {%- for inner in section.blocks offset: purchase_start -%}
+                {%- if forloop.index <= purchase_skip -%}
+                  {%- continue -%}
+                {%- endif -%}
+                {%- unless inner.type == 'variant' or inner.type == 'price' or inner.type == 'buy' or inner.type == 'shipping' -%}
+                  {%- break -%}
+                {%- endunless -%}
+                {%- assign rendered_until = purchase_start | plus: forloop.index -%}
+
+                {%- if inner.type == 'variant' -%}
+                  {% render '_knr-product-variant', product: product, block: inner %}
+                {%- elsif inner.type == 'price' -%}
+                  {%- assign unit_start = purchase_start | plus: forloop.index -%}
+                  {%- for unit_block in section.blocks offset: unit_start -%}
+                    {%- if unit_block.type != 'text' -%}
+                      {%- break -%}
+                    {%- endif -%}
+                    {%- assign rendered_until = unit_start | plus: forloop.index -%}
+                    {%- break -%}
+                  {%- endfor -%}
+                  <div class="knr-product__offer">
+                    {% render '_knr-product-price', variant: current_variant, block: inner %}
+                    {%- for unit_block in section.blocks offset: unit_start -%}
+                      {%- if unit_block.type != 'text' -%}
+                        {%- break -%}
+                      {%- endif -%}
+                      {% render '_knr-product-text', block: unit_block, class: 'knr-product__unit', variant: current_variant %}
+                      {%- break -%}
+                    {%- endfor -%}
+                  </div>
+                {%- elsif inner.type == 'buy' -%}
+                  {% render '_knr-product-buy', product: product, variant: current_variant, block: inner %}
+                {%- elsif inner.type == 'shipping' -%}
+                  {%- assign shipping_offset = purchase_start | plus: forloop.index0 -%}
+                  {%- for shipping_block in section.blocks offset: shipping_offset -%}
+                    {%- if shipping_block.type != 'shipping' -%}
+                      {%- break -%}
+                    {%- endif -%}
+                    {%- assign purchase_skip = forloop.parentloop.index | plus: forloop.index | minus: 1 -%}
+                    {%- assign rendered_until = shipping_offset | plus: forloop.index -%}
+                  {%- endfor -%}
+                  {% render '_knr-product-shipping', section: section, offset: shipping_offset %}
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+          {%- when 'dropdown' -%}
+            {%- assign details_start = forloop.index0 -%}
+            <div class="knr-product__details">
+              {%- for inner in section.blocks offset: details_start -%}
+                {%- if inner.type != 'dropdown' or inner.settings.title == blank -%}
+                  {%- break -%}
+                {%- endif -%}
+                {%- assign rendered_until = details_start | plus: forloop.index -%}
+                {%- assign dropdown_count = dropdown_count | plus: 1 -%}
+                {%- assign dropdown_open = false -%}
+                {%- if dropdown_count == 1 -%}
+                  {%- assign dropdown_open = true -%}
+                {%- endif -%}
+                {% render '_knr-product-dropdown', block: inner, open: dropdown_open %}
+              {%- endfor -%}
+            </div>
+
+          {%- when 'upsell' -%}
+            {% render '_knr-product-upsell', block: block %}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    {% render '_knr-product-images', product: product %}
+  </div>
+</knr-product>
+
+{% schema %}
+{
+  "name": "t:sections.knr-product.name",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "number",
+      "id": "hero_position",
+      "label": "t:sections.knr.hero_position.label",
+      "default": 50,
+      "info": "t:sections.knr.hero_position.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.knr.colors.content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.knr.background.label",
+      "default": "#F1EBE3"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "t:sections.knr.card_background.label",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.knr.text.label",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "breadcrumb",
+      "name": "t:sections.knr-product.blocks.breadcrumb.name",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "badge",
+      "name": "t:sections.knr-product.blocks.badge.name",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.knr.text.label",
+          "default": "t:sections.knr-product.blocks.badge.settings.text.default"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "t:sections.knr-product.blocks.title.name",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "review",
+      "name": "t:sections.knr-product.blocks.review.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "t:sections.knr.stars.label",
+          "min": 0,
+          "max": 5,
+          "step": 0.5,
+          "default": 4.5,
+          "info": "t:sections.knr.stars.info"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_note",
+          "label": "t:sections.knr-product.blocks.review.settings.show_note.label",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_count",
+          "label": "t:sections.knr-product.blocks.review.settings.show_count.label",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "count",
+          "label": "t:sections.knr.reviews.label",
+          "default": "t:sections.knr-product.blocks.review.settings.count.default",
+          "info": "t:sections.knr.reviews.info"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.knr-product.blocks.text.name",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.knr.text.label",
+          "default": "t:sections.knr-product.blocks.text.settings.text.default"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "t:sections.knr-product.blocks.description.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.knr.text.label",
+          "info": "t:sections.knr-product.blocks.description.settings.text.info"
+        }
+      ]
+    },
+    {
+      "type": "variant",
+      "name": "t:sections.knr-product.blocks.variant.name",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "price",
+      "name": "t:sections.knr-product.blocks.price.name",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "buy",
+      "name": "t:sections.knr-product.blocks.buy.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:sections.knr-product.blocks.buy.settings.label.label",
+          "default": "t:sections.knr-product.blocks.buy.settings.label.default"
+        }
+      ]
+    },
+    {
+      "type": "shipping",
+      "name": "t:sections.knr-product.blocks.shipping.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.knr.text.label",
+          "default": "t:sections.knr-product.blocks.shipping.settings.text.default",
+          "info": "t:sections.knr-product.blocks.shipping.settings.text.info"
+        },
+        {
+          "type": "range",
+          "id": "delay_days",
+          "label": "t:sections.knr-product.blocks.shipping.settings.delay_days.label",
+          "min": 0,
+          "max": 14,
+          "step": 1,
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "cutoff_hour",
+          "label": "t:sections.knr-product.blocks.shipping.settings.cutoff_hour.label",
+          "min": 0,
+          "max": 23,
+          "step": 1,
+          "default": 14
+        },
+        {
+          "type": "checkbox",
+          "id": "scroll",
+          "label": "t:sections.knr-product.blocks.shipping.settings.scroll.label",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "part_2",
+          "label": "t:sections.knr-product.blocks.shipping.settings.part_2.label"
+        },
+        {
+          "type": "text",
+          "id": "part_3",
+          "label": "t:sections.knr-product.blocks.shipping.settings.part_3.label"
+        },
+        {
+          "type": "text",
+          "id": "part_4",
+          "label": "t:sections.knr-product.blocks.shipping.settings.part_4.label"
+        }
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "t:sections.knr-product.blocks.dropdown.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.knr.heading.label",
+          "default": "t:sections.knr-product.blocks.dropdown.settings.title.default"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.knr.text.label"
+        }
+      ]
+    },
+    {
+      "type": "upsell",
+      "name": "t:sections.knr-product.blocks.upsell.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.knr.heading.label",
+          "default": "t:sections.knr-product.blocks.upsell.settings.heading.default"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "t:sections.knr-product.blocks.upsell.settings.products.label",
+          "limit": 8
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-product.name",
+      "blocks": [
+        { "type": "breadcrumb" },
+        { "type": "badge", "settings": { "text": "t:sections.knr-product.blocks.badge.settings.text.default" } },
+        { "type": "badge", "settings": { "text": "t:sections.knr-product.presets.badge_protected" } },
+        { "type": "title" },
+        { "type": "review" },
+        { "type": "text" },
+        { "type": "description" },
+        { "type": "variant" },
+        { "type": "price" },
+        { "type": "text", "settings": { "text": "t:sections.knr-product.presets.unit" } },
+        { "type": "buy" },
+        { "type": "shipping" },
+        { "type": "dropdown", "settings": { "title": "t:sections.knr-product.blocks.dropdown.settings.title.default" } },
+        { "type": "dropdown", "settings": { "title": "t:sections.knr-product.presets.benefits" } },
+        { "type": "dropdown", "settings": { "title": "t:sections.knr-product.presets.ingredients" } },
+        { "type": "dropdown", "settings": { "title": "t:sections.knr-product.presets.skin" } },
+        { "type": "upsell" }
+      ]
+    }
+  ]
+}
+{% endschema %}

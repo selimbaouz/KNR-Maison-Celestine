@@ -1,0 +1,122 @@
+{{ 'knr-product-commitments.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign quote_image = section.settings.image
+  assign image_alt = quote_image.alt | default: section.settings.title
+
+  if section.settings.color_mode == 'light'
+    assign text_color = '#000000'
+    assign overlay_color = '#ffffff'
+  else
+    assign text_color = '#ffffff'
+    assign overlay_color = '#000000'
+  endif
+
+  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
+%}
+
+<div
+  class="knr-product-commitments"
+  style="
+    --text-color: {{ text_color }};
+    --overlay-color: {{ overlay_color }};
+    --overlay-opacity: {{ overlay_opacity }};
+    --image-position: {{ section.settings.image_position }}%;
+  "
+>
+  {% render '_knr-image',
+    wrapper_class: 'knr-product-commitments__media',
+    image_desktop: quote_image,
+    image_desktop_class: 'knr-product-commitments__image',
+    image_desktop_width: 2000,
+    image_desktop_sizes: '100vw',
+    image_desktop_loading: 'lazy',
+    image_desktop_alt: image_alt,
+    placeholder: true
+  %}
+
+  <div class="knr-product-commitments__inner page-width">
+    {%- if section.settings.title != blank -%}
+      <p class="knr-product-commitments__title">{{ section.settings.title | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.content != blank or section.settings.author != blank -%}
+      <div class="knr-product-commitments__body">
+        {%- if section.settings.content != blank -%}
+          <p class="knr-product-commitments__content">{{ section.settings.content | escape | newline_to_br }}</p>
+        {%- endif -%}
+        {%- if section.settings.author != blank -%}
+          <p class="knr-product-commitments__author">{{ section.settings.author | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.knr-product-commitments.name",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.knr.image.label"
+    },
+    {
+      "type": "number",
+      "id": "image_position",
+      "label": "t:sections.knr.image_position.label",
+      "default": 22,
+      "info": "t:sections.knr.image_position.info"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.knr.heading.label",
+      "default": "t:sections.knr-product-commitments.settings.title.default"
+    },
+    {
+      "type": "textarea",
+      "id": "content",
+      "label": "t:sections.knr.text.label",
+      "default": "t:sections.knr-product-commitments.settings.content.default"
+    },
+    {
+      "type": "text",
+      "id": "author",
+      "label": "t:sections.knr.author.label",
+      "default": "t:sections.knr-product-commitments.settings.author.default"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.knr.colors.content"
+    },
+    {
+      "type": "select",
+      "id": "color_mode",
+      "label": "t:sections.knr.contrast.label",
+      "options": [
+        { "value": "light", "label": "t:sections.knr.light.label" },
+        { "value": "dark", "label": "t:sections.knr.dark.label" }
+      ],
+      "default": "dark",
+      "info": "t:sections.knr.contrast_simple.info"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:sections.knr.overlay.label",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-product-commitments.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,121 @@
+{{ 'knr-product-faq.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'knr-product-faq.js' | asset_url }}" defer="defer"></script>
+
+<knr-product-faq
+  class="knr-product-faq"
+  data-section-id="{{ section.id }}"
+  style="
+    --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }};
+  "
+>
+  <div class="knr-product-faq__inner page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="knr-product-faq__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="knr-product-faq__list">
+        {%- for block in section.blocks -%}
+          {% liquid
+            if block.settings.question == blank
+              continue
+            endif
+
+            assign panel_id = section.id | append: '-faq-' | append: forloop.index
+            assign is_open = false
+            if forloop.first
+              assign is_open = true
+            endif
+          %}
+          <div
+            class="knr-product-faq__item{% if is_open %} knr-product-faq__item--open{% endif %}"
+            data-ref="item"
+            {{ block.shopify_attributes }}
+          >
+            <button
+              type="button"
+              class="knr-product-faq__toggle"
+              data-ref="toggle"
+              aria-expanded="{% if is_open %}true{% else %}false{% endif %}"
+              aria-controls="{{ panel_id }}"
+            >
+              <span class="knr-product-faq__question">{{ block.settings.question | escape }}</span>
+              <span class="knr-product-faq__icon" aria-hidden="true">
+                {% render '_knr-icons', icon: 'chevron-down' %}
+              </span>
+            </button>
+            {%- if block.settings.answer != blank -%}
+              <p class="knr-product-faq__answer" id="{{ panel_id }}" data-ref="panel"{% unless is_open %} hidden{% endunless %}>
+                {{ block.settings.answer | escape | newline_to_br }}
+              </p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</knr-product-faq>
+
+{% schema %}
+{
+  "name": "t:sections.knr-product-faq.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.knr.heading.label",
+      "default": "t:sections.knr-product-faq.settings.heading.default"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.knr.colors.content"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.knr.background.label",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.knr.text.label",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "t:sections.knr-product-faq.blocks.item.name",
+      "limit": 12,
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "t:sections.knr.question.label",
+          "default": "t:sections.knr-product-faq.blocks.item.settings.question.default"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "t:sections.knr.answer.label",
+          "default": "t:sections.knr-product-faq.blocks.item.settings.answer.default"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-product-faq.name",
+      "blocks": [
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" },
+        { "type": "item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

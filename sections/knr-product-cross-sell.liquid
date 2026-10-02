@@ -1,0 +1,121 @@
+{{ 'knr-product-cross-sell.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'knr-product-cross-sell.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{%- assign cross_product = section.settings.product -%}
+{%- if cross_product != blank -%}
+  {%- assign cross_variant = cross_product.selected_or_first_available_variant -%}
+  {%- assign cross_image = section.settings.image | default: cross_product.featured_image -%}
+  {%- assign cross_image_alt = cross_image.alt | default: cross_product.title -%}
+  <knr-product-cross-sell class="knr-product-cross-sell">
+    <article class="knr-product-cross-sell__card">
+      <div class="knr-product-cross-sell__info">
+        {%- if cross_image != blank -%}
+          <div class="knr-product-cross-sell__media">
+            {% render '_knr-image',
+              wrapper_class: 'knr-product-cross-sell__picture',
+              image_desktop: cross_image,
+              image_desktop_class: 'knr-product-cross-sell__image',
+              image_desktop_width: 208,
+              image_desktop_sizes: '104px',
+              image_desktop_alt: cross_image_alt,
+              image_desktop_loading: 'lazy'
+            %}
+          </div>
+        {%- endif -%}
+        <div class="knr-product-cross-sell__details">
+          <div class="knr-product-cross-sell__intro">
+            <p class="knr-product-cross-sell__title">{{ cross_product.title | escape }}</p>
+            {%- unless cross_product.has_only_default_variant -%}
+              {%- for option in cross_product.options_with_values -%}
+                <div class="knr-product-cross-sell__sizes" data-ref="option">
+                  {%- for value in option.values -%}
+                    <button
+                      type="button"
+                      class="knr-product-cross-sell__size{% if option.selected_value == value %} knr-product-cross-sell__size--current{% endif %}"
+                      data-ref="size"
+                      data-value="{{ value | escape }}"
+                      aria-pressed="{% if option.selected_value == value %}true{% else %}false{% endif %}"
+                    >
+                      {{ value | escape }}
+                    </button>
+                  {%- endfor -%}
+                </div>
+              {%- endfor -%}
+            {%- endunless -%}
+          </div>
+          <p class="knr-product-cross-sell__price" data-ref="price">{{ cross_variant.price | money }}</p>
+        </div>
+      </div>
+      <product-form class="knr-product-cross-sell__buy" data-hide-errors="true">
+        {%- form 'product', cross_product, class: 'knr-product-cross-sell__form' -%}
+          <input type="hidden" name="id" value="{{ cross_variant.id }}" data-ref="variant-id">
+          <button
+            type="submit"
+            name="add"
+            class="knr-product-cross-sell__add"
+            data-ref="add"
+            data-label="{{ section.settings.button_label | escape }}"
+            data-sold-out="{{ 'products.product.sold_out' | t }}"
+            {% unless cross_variant.available %}disabled aria-disabled="true"{% endunless %}
+          >
+            <span>
+              {%- if cross_variant.available -%}
+                {{ section.settings.button_label | escape }}
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </span>
+            {% render 'loading-spinner' %}
+          </button>
+        {%- endform -%}
+      </product-form>
+      <script type="application/json" data-ref="variants">
+        [
+          {%- for variant in cross_product.variants -%}
+            {
+              "id": {{ variant.id }},
+              "options": {{ variant.options | json }},
+              "available": {{ variant.available }},
+              "price": {{ variant.price | money | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      </script>
+    </article>
+  </knr-product-cross-sell>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.knr-product-cross-sell.name",
+  "tag": "section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "t:sections.knr-product-cross-sell.settings.product.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.knr.image.label",
+      "info": "t:sections.knr-product-cross-sell.settings.image.info"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.knr.button.label",
+      "default": "t:sections.knr-product.blocks.buy.settings.label.default"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-product-cross-sell.name"
+    }
+  ]
+}
+{% endschema %}

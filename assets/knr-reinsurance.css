@@ -1,0 +1,93 @@
+.knr-reinsurance {
+  display: block;
+  background-color: var(--background-color, #dcd5c3);
+  color: var(--text-color, #000000);
+}
+
+.knr-reinsurance__inner {
+  padding: 80px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.knr-reinsurance__viewport {
+  overflow: hidden;
+}
+
+.knr-reinsurance__track {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+}
+
+.knr-reinsurance__item {
+  display: flex;
+  flex: 0 0 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+  text-align: center;
+}
+
+.knr-reinsurance__title,
+.knr-reinsurance__text {
+  letter-spacing: -2%;
+}
+
+.knr-reinsurance__title {
+  font-size: 14px;
+  line-height: 14px;
+  text-transform: uppercase;
+}
+
+.knr-reinsurance__text {
+  font-size: 12px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.knr-reinsurance__dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.knr-reinsurance__dot {
+  width: 16px;
+  height: 2px;
+  padding: 0;
+  border: 0;
+  background-color: #B5A282;
+  cursor: pointer;
+}
+
+.knr-reinsurance__dot--active {
+  background-color: #000000;
+}
+
+.knr-reinsurance__dot:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+@media (min-width: 990px) {
+  .knr-reinsurance__viewport {
+    overflow: visible;
+  }
+
+  .knr-reinsurance__track {
+    display: grid;
+    grid-template-columns: repeat(var(--reinsurance-columns, 4), minmax(0, 1fr));
+    gap: 80px;
+  }
+
+  .knr-reinsurance__text {
+    max-width: 140px;
+    white-space: normal;
+  }
+
+  .knr-reinsurance__dots {
+    display: none;
+  }
+}

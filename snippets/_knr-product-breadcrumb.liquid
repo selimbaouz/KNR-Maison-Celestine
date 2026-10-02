@@ -1,0 +1,29 @@
+{% doc %}
+  Fil d'Ariane : type puis première collection.
+
+  @param {object} product - Produit
+  @param {object} block - Bloc breadcrumb
+
+  @example
+  {% render '_knr-product-breadcrumb', product: product, block: block %}
+{% enddoc %}
+
+{%- assign breadcrumb_collection = nil -%}
+{%- for collection in product.collections -%}
+  {%- if collection.handle != 'frontpage' -%}
+    {%- assign breadcrumb_collection = collection -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if product.type != blank or breadcrumb_collection != blank -%}
+  <p class="knr-product__breadcrumb" {{ block.shopify_attributes }}>
+    {%- if product.type != blank -%}
+      <span>{{ product.type | escape }}</span>
+    {%- endif -%}
+    {%- if breadcrumb_collection != blank -%}
+      {%- if product.type != blank -%}{{ ' / ' }}{%- endif -%}
+      <a href="{{ breadcrumb_collection.url }}">{{ breadcrumb_collection.title | escape }}</a>
+    {%- endif -%}
+  </p>
+{%- endif -%}

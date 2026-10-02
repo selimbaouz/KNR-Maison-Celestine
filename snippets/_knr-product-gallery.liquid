@@ -1,0 +1,50 @@
+{% doc %}
+  Carrousel de la première image, badges et flèches.
+
+  @param {object} product - Produit
+  @param {object} section - Section produit
+
+  @example
+  {% render '_knr-product-gallery', product: product, section: section %}
+{% enddoc %}
+
+<div class="knr-product__media">
+  {%- assign image_count = 0 -%}
+  {%- capture product_slides -%}
+    {%- for media in product.media -%}
+      {%- if media.media_type == 'image' -%}
+        {%- assign image_count = image_count | plus: 1 -%}
+        <div class="knr-product__slide knr-slider__slide">
+          {% render '_knr-image',
+            wrapper_class: 'knr-product__picture',
+            image_desktop: media,
+            image_desktop_class: 'knr-product__image',
+            image_desktop_width: 2000,
+            image_desktop_sizes: '100vw',
+            image_desktop_alt: media.alt
+          %}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {% render '_knr-slider', slides: product_slides %}
+  {%- capture product_badges -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'badge' -%}
+        {% render '_knr-product-badge', block: block %}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign product_badges = product_badges | strip -%}
+  {%- if product_badges != blank -%}
+    <div class="knr-product__badges knr-product__badges--overlay">{{ product_badges }}</div>
+  {%- endif -%}
+  {%- if image_count > 1 -%}
+    <button type="button" class="knr-product__prev" data-ref="gallery-prev" aria-label="{{ 'knr.product.previous_image' | t }}" hidden>
+      {% render '_knr-icons', icon: 'arrow-left' %}
+    </button>
+    <button type="button" class="knr-product__next" data-ref="gallery-next" aria-label="{{ 'knr.product.next_image' | t }}">
+      {% render '_knr-icons', icon: 'arrow-right' %}
+    </button>
+  {%- endif -%}
+</div>

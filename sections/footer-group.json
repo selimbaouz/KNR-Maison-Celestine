@@ -11,25 +11,102 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "footer": {
-      "type": "footer",
+    "knr-reinsurance": {
+      "type": "knr-reinsurance",
+      "blocks": {
+        "item-1": {
+          "type": "item",
+          "settings": {
+            "title": "Livraison offerte",
+            "text": "Livraison offerte dès 60 € d'achat en France métropolitaine."
+          }
+        },
+        "item-2": {
+          "type": "item",
+          "settings": {
+            "title": "Retours gratuits",
+            "text": "Retours acceptés jusqu'à 30 jours après réception."
+          }
+        },
+        "item-3": {
+          "type": "item",
+          "settings": {
+            "title": "Paiement sécurisé",
+            "text": "Paiement 100 % sécurisé par carte bancaire, PayPal ou virement."
+          }
+        },
+        "item-4": {
+          "type": "item",
+          "settings": {
+            "title": "Service client",
+            "text": "Du lundi au vendredi de 9h à 18h par email et téléphone."
+          }
+        }
+      },
+      "block_order": [
+        "item-1",
+        "item-2",
+        "item-3",
+        "item-4"
+      ],
       "settings": {
-        "color_scheme": "scheme-1",
-        "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
-        "enable_follow_on_shop": true,
-        "show_social": true,
+        "background_color": "#dcd5c3",
+        "text_color": "#000000"
+      }
+    },
+    "knr-footer": {
+      "type": "knr-footer",
+      "blocks": {
+        "column-1": {
+          "type": "column",
+          "settings": {
+            "heading": "Découvrir",
+            "menu": "footer"
+          }
+        },
+        "column-2": {
+          "type": "column",
+          "settings": {
+            "heading": "Service client",
+            "menu": "footer-service-client"
+          }
+        },
+        "column-3": {
+          "type": "column",
+          "settings": {
+            "heading": "Légal & Transparence",
+            "menu": "footer-l-gal"
+          }
+        }
+      },
+      "block_order": [
+        "column-1",
+        "column-2",
+        "column-3"
+      ],
+      "settings": {
+        "show_logo": true,
+        "logo": "shopify://shop_images/Union.svg",
+        "about_heading": "À propos de Maison Célestine",
+        "about_text": "Maison Célestine est une marque de soins anti-âge haut de gamme formulée autour d'actifs rares et certifiés biologiques, guidée par une expertise médicale et un rituel simple, précis et efficace.",
+        "certification_image": "shopify://shop_images/Certificat.svg",
+        "certification_text": "Certifié COSMOS ORGANIC par ECOCERT Greenlife",
+        "certificate_label": "Voir le certificat",
+        "certificate_url": "#",
+        "copyright": "Maison Célestine. Tous droits réservés.",
+        "facebook_url": "#",
+        "instagram_url": "#",
+        "tiktok_url": "#",
+        "linkedin_url": "#",
         "enable_country_selector": true,
         "enable_language_selector": true,
-        "payment_enable": true,
-        "show_policy": true,
-        "margin_top": 0,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "background_color": "#f7f5f2",
+        "text_color": "#000000"
       }
     }
   },
   "order": [
-    "footer"
+    "knr-reinsurance",
+    "knr-footer"
   ]
 }

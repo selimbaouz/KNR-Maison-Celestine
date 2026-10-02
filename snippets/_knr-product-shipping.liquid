@@ -1,0 +1,53 @@
+{% doc %}
+  Message de livraison. Avec le défilement, quatre parties passent dans le slider.
+
+  @param {object} section - Section produit
+  @param {number} offset - Index du premier bloc livraison
+
+  @example
+  {% render '_knr-product-shipping', section: section, offset: shipping_offset %}
+{% enddoc %}
+
+{%- assign shipping_group = 0 -%}
+{%- capture shipping_slides -%}
+  {%- for block in section.blocks offset: offset -%}
+    {%- if block.type != 'shipping' -%}
+      {%- break -%}
+    {%- endif -%}
+    {%- if block.settings.text != blank -%}
+      {%- assign shipping_group = shipping_group | plus: 1 -%}
+      <p
+        class="knr-product__shipping-text knr-slider__slide"
+        data-ref="shipping-slide"
+        data-text="{{ block.settings.text | escape }}"
+        data-delay="{{ block.settings.delay_days }}"
+        data-cutoff="{{ block.settings.cutoff_hour }}"
+        {{ block.shopify_attributes }}
+      >{{ block.settings.text | escape }}</p>
+    {%- endif -%}
+    {%- if block.settings.scroll -%}
+      {%- if block.settings.part_2 != blank -%}
+        {%- assign shipping_group = shipping_group | plus: 1 -%}
+        <p class="knr-product__shipping-text knr-slider__slide">{{ block.settings.part_2 | escape }}</p>
+      {%- endif -%}
+      {%- if block.settings.part_3 != blank -%}
+        {%- assign shipping_group = shipping_group | plus: 1 -%}
+        <p class="knr-product__shipping-text knr-slider__slide">{{ block.settings.part_3 | escape }}</p>
+      {%- endif -%}
+      {%- if block.settings.part_4 != blank -%}
+        {%- assign shipping_group = shipping_group | plus: 1 -%}
+        <p class="knr-product__shipping-text knr-slider__slide">{{ block.settings.part_4 | escape }}</p>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if shipping_group > 0 -%}
+  <div class="knr-product__shipping" data-ref="shipping">
+    {%- if shipping_group > 1 -%}
+      {% render '_knr-slider', slides: shipping_slides, carousel: true %}
+    {%- else -%}
+      {{ shipping_slides }}
+    {%- endif -%}
+  </div>
+{%- endif -%}

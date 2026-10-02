@@ -10,87 +10,365 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
+      "type": "knr-product",
       "blocks": {
-        "vendor": {
-          "type": "text",
+        "breadcrumb": {
+          "type": "breadcrumb",
+          "settings": {}
+        },
+        "badge-1": {
+          "type": "badge",
           "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
+            "text": "Unifié"
+          }
+        },
+        "badge-2": {
+          "type": "badge",
+          "settings": {
+            "text": "Protégé"
           }
         },
         "title": {
           "type": "title",
           "settings": {}
         },
-        "price": {
-          "type": "price",
-          "settings": {}
-        },
-        "variant_picker": {
-          "type": "variant_picker",
+        "rating": {
+          "type": "review",
           "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
+            "rating": 4.5,
+            "show_note": true,
+            "count": "200 avis"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
-        "buy_buttons": {
-          "type": "buy_buttons",
+        "info": {
+          "type": "text",
           "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
+            "text": "<p><strong>Yuka </strong>100/100 · <strong>INCI Beauty </strong>20/20</p>"
           }
         },
         "description": {
           "type": "description",
+          "settings": {
+            "text": "<p>Une huile anti-âge sèche ultra fine qui travaille en synergie avec la peau pour la maintenir ferme, pleine de vitalité tout en lissant les rides.</p>"
+          }
+        },
+        "variant": {
+          "type": "variant",
           "settings": {}
         },
-        "share": {
-          "type": "share",
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "unit": {
+          "type": "text",
           "settings": {
-            "share_label": "Share"
+            "text": "<p>par 100 mL</p>"
+          }
+        },
+        "buy": {
+          "type": "buy",
+          "settings": {
+            "label": "Ajouter au panier"
+          }
+        },
+        "shipping": {
+          "type": "shipping",
+          "settings": {
+            "text": "En stock, livraison estimée #estimated_date#.",
+            "delay_days": 3,
+            "cutoff_hour": 14,
+            "scroll": true,
+            "part_2": "Livraison offerte dès 60 € d'achat en France métropolitaine.",
+            "part_3": "Retours acceptés jusqu'à 30 jours après réception.",
+            "part_4": "Paiement 100 % sécurisé par carte bancaire, PayPal ou virement."
+          }
+        },
+        "drop-1": {
+          "type": "dropdown",
+          "settings": {
+            "title": "Description",
+            "text": "<p>Formulé à partir de 97 % d'ingrédients d'origine naturelle, ce sérum précieux active les mécanismes naturels de régénération cellulaire.</p>"
+          }
+        },
+        "drop-2": {
+          "type": "dropdown",
+          "settings": {
+            "title": "Bienfaits",
+            "text": "<p>Formulé à partir de 97 % d'ingrédients d'origine naturelle, ce sérum précieux active les mécanismes naturels de régénération cellulaire.</p>"
+          }
+        },
+        "drop-3": {
+          "type": "dropdown",
+          "settings": {
+            "title": "Ingrédients clés",
+            "text": "<p>Formulé à partir de 97 % d'ingrédients d'origine naturelle, ce sérum précieux active les mécanismes naturels de régénération cellulaire.</p>"
+          }
+        },
+        "drop-4": {
+          "type": "dropdown",
+          "settings": {
+            "title": "Adapté aux peaux",
+            "text": "<p>Formulé à partir de 97 % d'ingrédients d'origine naturelle, ce sérum précieux active les mécanismes naturels de régénération cellulaire.</p>"
+          }
+        },
+        "upsell": {
+          "type": "upsell",
+          "settings": {
+            "heading": "Complétez votre rituel",
+            "products": [
+              "creme-regenerante",
+              "huile-precieuse",
+              "serum-eclat"
+            ]
           }
         }
       },
       "block_order": [
-        "vendor",
+        "breadcrumb",
+        "badge-1",
+        "badge-2",
         "title",
-        "price",
-        "variant_picker",
-        "quantity_selector",
-        "buy_buttons",
+        "rating",
+        "info",
         "description",
-        "share"
+        "variant",
+        "price",
+        "unit",
+        "buy",
+        "shipping",
+        "drop-1",
+        "drop-2",
+        "drop-3",
+        "drop-4",
+        "upsell"
       ],
       "settings": {
-        "enable_sticky_info": true,
-        "color_scheme": "scheme-1",
-        "media_size": "large",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "gallery_layout": "stacked",
-        "mobile_thumbnails": "hide",
-        "media_position": "left",
-        "image_zoom": "lightbox",
-        "hide_variants": true,
-        "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
+        "background_color": "#f1ebe3",
+        "card_background": "#ffffff",
+        "text_color": "#000000",
+        "hero_position": 21
+      }
+    },
+    "knr-product-commitments": {
+      "type": "knr-product-commitments",
+      "settings": {
+        "image": "shopify://shop_images/d014f5e301a18ba044a0ae27957d3bf8f309d7e3.png",
+        "image_position": 22,
+        "title": "Notre engagement pour une beauté régénérée",
+        "content": "Fusionnant l'huile de rosier muscat, le rétinol végétal et l'extrait de cactus, notre sérum pénètre en profondeur pour stimuler le renouvellement cellulaire, atténuer les rides et redonner à la peau son éclat et sa fermeté naturels.",
+        "author": "Sophie M.",
+        "color_mode": "dark",
+        "overlay_opacity": 20
+      }
+    },
+    "knr-product-cross-sell": {
+      "type": "knr-product-cross-sell",
+      "settings": {
+        "product": "serum-precieux-regenerant",
+        "image": "shopify://shop_images/b3c41b28239a6e1484b6d8323c24190882ab2c03_7afc01aa-796f-4f84-8ae3-34a12ce0f2dc.png",
+        "button_label": "Ajouter au panier"
+      }
+    },
+    "knr-product-how-to-use": {
+      "type": "knr-product-how-to-use",
+      "blocks": {
+        "step-1": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/b3c41b28239a6e1484b6d8323c24190882ab2c03_7afc01aa-796f-4f84-8ae3-34a12ce0f2dc.png",
+            "title": "Régénérer & Lisser",
+            "text": "Concentré de pureté active. Huile végétale aux propriétés anti-oxydantes puissantes pour un éclat retrouvé."
+          }
+        },
+        "step-2": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/d4b7f3b211c02c30ecfa9fcc5f20aacc35a96d1e.png",
+            "title": "Hydrater & Repulper",
+            "text": "Éclat et uniformité retrouvés. Cible les taches et les irrégularités de grain de peau."
+          }
+        },
+        "step-3": {
+          "type": "step",
+          "settings": {
+            "image": "shopify://shop_images/a90b67da1b70d5da6391fac25ef72a00c2465f75.png",
+            "title": "Découvrir",
+            "text": "Fermeté et nutrition intense. Répare la barrière cutanée et lisse les contours du visage."
+          }
+        }
+      },
+      "block_order": [
+        "step-1",
+        "step-2",
+        "step-3"
+      ],
+      "settings": {
+        "heading": "How to use",
+        "background_color": "#ffffff",
+        "text_color": "#000000"
+      }
+    },
+    "knr-product-testimonials": {
+      "type": "knr-product-testimonials",
+      "blocks": {
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "image_before": "shopify://shop_images/1cbe2648-9e14-45d2-bb3c-34c90ce15cf3.jpg",
+            "image_after": "shopify://shop_images/677e84c0-e530-40d8-a5fa-267f2303f895.jpg",
+            "label_before": "Before",
+            "label_after": "After",
+            "rating": 4.5,
+            "author": "Clara T.",
+            "quote": "J'utilise ce sérum depuis trois mois et la différence est saisissante. Mes rides d'expression se sont considérablement atténuées et mon teint a retrouvé une luminosité que je n'avais plus depuis des années. Une texture soyeuse qui pénètre instantanément. Je ne peux plus m'en passer."
+          }
+        },
+        "review_QPyTNW": {
+          "type": "review",
+          "settings": {
+            "image_before": "shopify://shop_images/1cbe2648-9e14-45d2-bb3c-34c90ce15cf3.jpg",
+            "image_after": "shopify://shop_images/677e84c0-e530-40d8-a5fa-267f2303f895.jpg",
+            "label_before": "Before",
+            "label_after": "After",
+            "rating": 4.5,
+            "author": "Clara T.",
+            "quote": "J'utilise ce sérum depuis trois mois et la différence est saisissante. Mes rides d'expression se sont considérablement atténuées et mon teint a retrouvé une luminosité que je n'avais plus depuis des années. Une texture soyeuse qui pénètre instantanément. Je ne peux plus m'en passer."
+          }
+        },
+        "review_tNdxyK": {
+          "type": "review",
+          "settings": {
+            "image_before": "shopify://shop_images/1cbe2648-9e14-45d2-bb3c-34c90ce15cf3.jpg",
+            "image_after": "shopify://shop_images/677e84c0-e530-40d8-a5fa-267f2303f895.jpg",
+            "label_before": "Before",
+            "label_after": "After",
+            "rating": 4.5,
+            "author": "Clara T.",
+            "quote": "J'utilise ce sérum depuis trois mois et la différence est saisissante. Mes rides d'expression se sont considérablement atténuées et mon teint a retrouvé une luminosité que je n'avais plus depuis des années. Une texture soyeuse qui pénètre instantanément. Je ne peux plus m'en passer."
+          }
+        }
+      },
+      "block_order": [
+        "review-1",
+        "review_QPyTNW",
+        "review_tNdxyK"
+      ],
+      "settings": {
+        "heading": "Ce que disent nos clientes",
+        "introduction": "Des transformations visibles dès 4 semaines. Nos clientes témoignent d'une peau visiblement régénérée, plus ferme et lumineuse.",
+        "background_color": "#f6f4f0",
+        "text_color": "#000000",
+        "color_mode": "light",
+        "overlay_opacity": 20
+      }
+    },
+    "knr-product-faq": {
+      "type": "knr-product-faq",
+      "blocks": {
+        "item-1": {
+          "type": "item",
+          "settings": {
+            "question": "Comment utiliser ?",
+            "answer": "Appliquez 3 à 5 gouttes le soir sur visage et cou préalablement nettoyés. Massez délicatement en mouvements ascendants jusqu'à absorption complète. Peut s'utiliser seul ou sous votre crème habituelle."
+          }
+        },
+        "item-2": {
+          "type": "item",
+          "settings": {
+            "question": "Quand voir les effets ?",
+            "answer": "Des transformations visibles dès 4 semaines."
+          }
+        },
+        "item-3": {
+          "type": "item",
+          "settings": {
+            "question": "Convient-il à tous ?",
+            "answer": "Il convient à tous les types de peau."
+          }
+        },
+        "item-4": {
+          "type": "item",
+          "settings": {
+            "question": "Est-il naturel ?",
+            "answer": "Sa formule privilégie des actifs d'origine naturelle."
+          }
+        },
+        "item-5": {
+          "type": "item",
+          "settings": {
+            "question": "Peut-on l'associer ?",
+            "answer": "Oui. Il peut s'utiliser seul ou sous votre crème habituelle."
+          }
+        }
+      },
+      "block_order": [
+        "item-1",
+        "item-2",
+        "item-3",
+        "item-4",
+        "item-5"
+      ],
+      "settings": {
+        "heading": "Questions fréquentes",
+        "background_color": "#ffffff",
+        "text_color": "#000000"
+      }
+    },
+    "knr-product-reviews": {
+      "type": "knr-product-reviews",
+      "settings": {
+        "title": "Avis clients",
+        "per_page": 3,
+        "filter_by_product": false,
+        "review_label": "Écrire un avis",
+        "question_label": "Poser une question",
+        "load_more_label": "Charger plus",
+        "background_color": "#ffffff",
+        "text_color": "#000000"
+      }
+    },
+    "knr-news": {
+      "type": "knr-news",
+      "settings": {
+        "heading": "Latest news",
+        "blog": "news",
+        "link_label": "Voir tous les articles",
+        "articles_count": "4",
+        "background_color": "#ffffff",
+        "text_color": "#000000"
+      }
+    },
+    "knr-newsletter": {
+      "type": "knr-newsletter",
+      "settings": {
+        "image": "shopify://shop_images/aaa_2f6c2b09-edcb-4c45-a208-b96254180068.png",
+        "heading": "L'alliance de la science botanique et du luxe naturel pour une peau visiblement rajeunie en 4 semaines.",
+        "heading_mobile": "Sérum précieux régénérant — l'alliance de la science botanique et du luxe naturel pour une peau visiblement rajeunie en 4 semaines.",
+        "placeholder": "E-mail",
+        "button_label": "S'inscrire",
+        "note": "Formule brevetée, testée dermatologiquement, 97 % d'ingrédients d'origine naturelle.",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "button_background": "#000000",
+        "button_text": "#ffffff"
       }
     },
     "disclosures": {
       "type": "disclosures",
+      "disabled": true,
       "settings": {
+        "heading": "Disclosures",
+        "heading_size": "h2",
+        "open_by_default": false,
+        "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 0
       }
     },
     "related-products": {
       "type": "related-products",
+      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
@@ -110,6 +388,14 @@
   },
   "order": [
     "main",
+    "knr-product-commitments",
+    "knr-product-cross-sell",
+    "knr-product-how-to-use",
+    "knr-product-testimonials",
+    "knr-product-faq",
+    "knr-product-reviews",
+    "knr-news",
+    "knr-newsletter",
     "disclosures",
     "related-products"
   ]

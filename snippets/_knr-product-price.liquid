@@ -1,0 +1,18 @@
+{% doc %}
+  Prix et prix barré de la variante courante.
+
+  @param {object} variant - Variante sélectionnée
+  @param {object} block - Bloc price
+
+  @example
+  {% render '_knr-product-price', variant: current_variant, block: block %}
+{% enddoc %}
+
+<div class="knr-product__price-row" {{ block.shopify_attributes }}>
+  <p class="knr-product__price" data-ref="price">{{ variant.price | money }}</p>
+  <p class="knr-product__compare" data-ref="compare"{% unless variant.compare_at_price > variant.price %} hidden{% endunless %}>
+    {%- if variant.compare_at_price > variant.price -%}
+      {{ variant.compare_at_price | money }}
+    {%- endif -%}
+  </p>
+</div>

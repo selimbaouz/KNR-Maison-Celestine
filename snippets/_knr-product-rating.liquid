@@ -1,0 +1,29 @@
+{% doc %}
+  Note et nombre d'avis.
+
+  @param {object} block - Bloc rating
+
+  @example
+  {% render '_knr-product-rating', block: block %}
+{% enddoc %}
+
+{%- assign rating_value = block.settings.rating | times: 1 -%}
+{%- assign rating_label = rating_value | replace: '.', ',' -%}
+{%- assign show_count = false -%}
+{%- if block.settings.show_count and block.settings.count != blank -%}
+  {%- assign show_count = true -%}
+{%- endif -%}
+<div class="knr-product__rating{% unless block.settings.show_note %} knr-product__rating--stars{% endunless %}" {{ block.shopify_attributes }}>
+  <div class="knr-product__rating-score">
+    {% render '_knr-review-star', reviews_rating: rating_value %}
+    {%- if block.settings.show_note -%}
+      <span>{{ rating_label }}</span>
+    {%- endif -%}
+  </div>
+  {%- if show_count -%}
+    {%- if block.settings.show_note -%}
+      <span class="knr-product__rating-dot" aria-hidden="true">·</span>
+    {%- endif -%}
+    <span class="knr-product__rating-count">{{ block.settings.count | escape }}</span>
+  {%- endif -%}
+</div>

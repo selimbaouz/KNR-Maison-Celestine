@@ -1,0 +1,127 @@
+{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
+{{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}
+{{ 'knr-header.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  if section.settings.color_mode == 'light'
+    assign header_text_color = '#000000'
+  else
+    assign header_text_color = '#ffffff'
+  endif
+-%}
+
+<header
+  class="knr-header header-wrapper{% if section.settings.color_mode == 'light' %} knr-header--light{% endif %}"
+  style="--text-color: {{ header_text_color }};"
+>
+  <div class="knr-header__bar page-width">
+  <a class="knr-header__logo" href="{{ routes.root_url }}">
+    {%- if settings.logo != blank -%}
+      {%- assign header_logo_alt = settings.logo.alt | default: shop.name -%}
+      {% render '_knr-image',
+        wrapper_class: 'knr-header__logo-picture',
+        image_desktop: settings.logo,
+        image_desktop_class: 'knr-header__logo-mark',
+        image_desktop_width: 320,
+        image_desktop_sizes: '160px',
+        image_desktop_alt: header_logo_alt
+      %}
+    {%- else -%}
+      <span class="knr-header__logo-text">{{ shop.name | escape }}</span>
+    {%- endif -%}
+  </a>
+
+  {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+    <ul class="knr-header__nav">
+      {%- for link in section.settings.menu.links -%}
+        {%- if link.url != blank -%}
+          <li class="knr-header__item">
+            <a class="knr-header__link" href="{{ link.url }}">{{ link.title | escape }}</a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  <div class="knr-header__tools">
+    {%- if section.settings.store_url != blank -%}
+      <a class="knr-header__tool" href="{{ section.settings.store_url }}" aria-label="{{ 'knr.header.store' | t }}">
+        {% render '_knr-icons', icon: 'header-map' %}
+      </a>
+    {%- endif -%}
+    <a
+      class="knr-header__tool"
+      href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+      aria-label="{% if customer %}{{ 'customer.account.title' | t }}{% else %}{{ 'customer.log_in' | t }}{% endif %}"
+    >
+      {% render '_knr-icons', icon: 'header-profile' %}
+    </a>
+    <a class="knr-header__tool" href="{{ routes.search_url }}" aria-label="{{ 'general.search.search' | t }}">
+      {% render '_knr-icons', icon: 'header-search' %}
+    </a>
+    <a class="knr-header__tool knr-header__cart" id="cart-icon-bubble" href="{{ routes.cart_url }}">
+      {% render '_knr-icons', icon: 'header-cart' %}
+      <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+      {%- if cart != empty -%}
+        <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+        {%- if cart.item_count < 100 -%}
+          <span class="knr-header__count" aria-hidden="true">{{ cart.item_count }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    </a>
+    {%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+      {% render 'header-drawer', menu_icon: 'knr' %}
+    {%- endif -%}
+  </div>
+  </div>
+</header>
+
+{%- unless settings.cart_type == 'drawer' -%}
+  <cart-notification hidden></cart-notification>
+  <script src="{{ 'knr-cart.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "t:sections.knr-header.name",
+  "class": "section-header",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:sections.knr.menu.label",
+      "default": "main-menu"
+    },
+    {
+      "type": "color_scheme",
+      "id": "menu_color_scheme",
+      "label": "t:sections.knr-header.settings.menu_mobile.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "url",
+      "id": "store_url",
+      "label": "t:sections.knr-header.settings.store_url.label"
+    },
+    {
+      "type": "select",
+      "id": "color_mode",
+      "label": "t:sections.knr.contrast.label",
+      "options": [
+        { "value": "light", "label": "t:sections.knr.light.label" },
+        { "value": "dark", "label": "t:sections.knr.dark.label" }
+      ],
+      "default": "dark",
+      "info": "t:sections.knr.contrast_simple.info"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.knr-header.name"
+    }
+  ]
+}
+{% endschema %}

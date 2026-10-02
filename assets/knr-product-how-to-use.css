@@ -1,0 +1,113 @@
+.knr-product-how-to-use {
+  display: block;
+  background-color: var(--background-color, #ffffff);
+  color: var(--text-color, #000000);
+  padding: 40px 0 64px;
+}
+
+.knr-product-how-to-use__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.knr-product-how-to-use__heading {
+  margin: 0;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: -4%;
+}
+
+.knr-product-how-to-use__slide {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.knr-product-how-to-use__media {
+  display: block;
+  width: 100%;
+  height: 255px;
+  overflow: hidden;
+}
+
+.knr-product-how-to-use__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.knr-product-how-to-use__content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 16px;
+}
+
+.knr-product-how-to-use__index {
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: -4%;
+}
+
+.knr-product-how-to-use__title {
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -2%;
+}
+
+.knr-product-how-to-use__text {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: -2%;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.knr-product-how-to-use__slide--expanded .knr-product-how-to-use__text {
+  display: block;
+  -webkit-line-clamp: unset;
+}
+
+.knr-product-how-to-use__more {
+  align-self: flex-start;
+  margin-top: -8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: -2%;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+@media (min-width: 990px) {
+  .knr-product-how-to-use {
+    padding-bottom: 120px;
+  }
+
+  .knr-product-how-to-use__media {
+    height: 448px;
+  }
+
+  .knr-product-how-to-use__content {
+    padding: 0 24px;
+  }
+
+  .knr-product-how-to-use__text,
+  .knr-product-how-to-use__slide--expanded .knr-product-how-to-use__text {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+  }
+
+  .knr-product-how-to-use__more {
+    display: none;
+  }
+}
