@@ -540,27 +540,27 @@
   },
   "knr": {
     "header": {
-      "store": "Magasin"
+      "store": "Store"
     },
     "product": {
-      "previous_image": "Image précédente",
-      "next_image": "Image suivante",
-      "rating": "{{ rating }} sur 5",
-      "next_products": "Produits suivants"
+      "previous_image": "Previous image",
+      "next_image": "Next image",
+      "rating": "{{ rating }} out of 5",
+      "next_products": "Next products"
     },
     "slider": {
-      "part": "Partie {{ index }}"
+      "part": "Part {{ index }}"
     },
     "before_after": {
-      "compare": "Comparer avant et après"
+      "compare": "Compare before and after"
     },
     "testimonials": {
-      "previous": "Avis précédent",
-      "next": "Avis suivant"
+      "previous": "Previous review",
+      "next": "Next review"
     },
     "how_to_use": {
-      "more": "Lire plus",
-      "less": "Lire moins"
+      "more": "Read more",
+      "less": "Read less"
     },
     "social": {
       "facebook": "Facebook",
@@ -569,32 +569,32 @@
       "linkedin": "LinkedIn"
     },
     "reviews": {
-      "average": "{{ rating }} sur 5",
-      "based_on": "Basé sur {{ count }} avis",
-      "filter": "Filtrer",
-      "all_ratings": "Toutes les notes",
-      "star": "{{ count }} étoile",
-      "stars": "{{ count }} étoiles",
-      "verified": "vérifié",
-      "empty": "Aucun avis pour le moment.",
-      "empty_filter": "Aucun avis pour cette note.",
-      "success": "Merci ! Votre message a bien été envoyé. Il sera publié après modération.",
-      "close": "Fermer",
-      "your_rating": "Votre note",
-      "name": "Nom",
-      "email": "E-mail",
-      "title": "Titre",
-      "title_placeholder": "Ex : Après usage d'1 mois",
-      "your_review": "Votre avis",
-      "your_question": "Votre question",
-      "send_review": "Envoyer mon avis",
-      "send_question": "Envoyer ma question",
+      "average": "{{ rating }} out of 5",
+      "based_on": "Based on {{ count }} reviews",
+      "filter": "Filter",
+      "all_ratings": "All ratings",
+      "star": "{{ count }} star",
+      "stars": "{{ count }} stars",
+      "verified": "verified",
+      "empty": "No reviews yet.",
+      "empty_filter": "No reviews for this rating.",
+      "success": "Thank you! Your message has been sent. It will be published after moderation.",
+      "close": "Close",
+      "your_rating": "Your rating",
+      "name": "Name",
+      "email": "Email",
+      "title": "Title",
+      "title_placeholder": "E.g. After 1 month of use",
+      "your_review": "Your review",
+      "your_question": "Your question",
+      "send_review": "Submit my review",
+      "send_question": "Submit my question",
       "form_type": "Type",
-      "form_review": "Avis client",
-      "form_question": "Question client",
-      "form_product": "Produit",
-      "form_rating": "Note",
-      "form_title": "Titre"
+      "form_review": "Customer review",
+      "form_question": "Customer question",
+      "form_product": "Product",
+      "form_rating": "Rating",
+      "form_title": "Title"
     }
   }
 }
